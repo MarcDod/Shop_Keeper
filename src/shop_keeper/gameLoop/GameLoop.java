@@ -3,21 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package shop_keeper;
+package shop_keeper.gameLoop;
 
-import shop_keeper.gui.Window;
+import javax.swing.JPanel;
 
 /**
  *
  * @author Marc
  */
-public class Shop_Keeper {
+public class GameLoop extends JPanel implements Runnable{
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        new Window();
+    public GameLoop(){
+        
+    }
+    
+    @Override
+    public void run() {
+        
     }
     
 }
