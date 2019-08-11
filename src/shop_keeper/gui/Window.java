@@ -23,6 +23,8 @@ public class Window {
         this.gameFrame = initGameFrame();
         this.gamePanel = initGamePanel();
         
+        
+        
         this.gameFrame.add(gamePanel);
         this.gameFrame.pack();
     }
