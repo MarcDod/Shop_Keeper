@@ -14,8 +14,9 @@ import java.util.Stack;
 public class StateManager {
     Stack<State> stateStack;
     
-    public StateManager(){
+    public StateManager(State startState){
         this.stateStack = new Stack<>();
+        this.stateStack.push(startState);
     }
     
     /**

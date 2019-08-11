@@ -6,6 +6,8 @@
 package shop_keeper.states;
 
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 /**
  *
@@ -16,4 +18,6 @@ public abstract class State {
     public abstract void render(Graphics g2d);
     public abstract void cleanUp();
     public abstract void revert();   
+    public abstract void mousePressedEvent(MouseEvent me);
+    public abstract void keyTypedEvent(KeyEvent ke);
 }
