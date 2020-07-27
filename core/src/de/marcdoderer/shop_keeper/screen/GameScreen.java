@@ -139,6 +139,7 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void resize(final int width, final int height){
         viewport.update(width, height, false);
+        stateManager.peek().resize(width, height);
     }
 
     private void update(float delta){

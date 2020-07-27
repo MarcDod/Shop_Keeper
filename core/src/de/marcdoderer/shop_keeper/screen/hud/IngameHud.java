@@ -21,7 +21,7 @@ public class IngameHud {
     }
 
     public void resize(final float width, final float height){
-        hudCamera.setToOrtho(true, width, height);
+        hudCamera.setToOrtho(false, width, height);
         hudCamera.update();
     }
 
