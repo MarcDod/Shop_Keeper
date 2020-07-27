@@ -1,0 +1,90 @@
+
+npc.png
+size: 4096,2048
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+child0
+  rotate: false
+  xy: 1, 1029
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+child1
+  rotate: false
+  xy: 1, 515
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+girl0
+  rotate: false
+  xy: 515, 1029
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+girl1
+  rotate: false
+  xy: 1, 1
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+guy0
+  rotate: false
+  xy: 515, 515
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+guy1
+  rotate: false
+  xy: 1029, 1029
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+oldGuy0
+  rotate: false
+  xy: 515, 1
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+oldGuy1
+  rotate: false
+  xy: 1029, 515
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+oldWoman0
+  rotate: false
+  xy: 1543, 1029
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+oldWoman1
+  rotate: false
+  xy: 1029, 1
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+worker0
+  rotate: false
+  xy: 1543, 515
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+worker1
+  rotate: false
+  xy: 2057, 1029
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1

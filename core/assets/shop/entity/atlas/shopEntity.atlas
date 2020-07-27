@@ -1,0 +1,20 @@
+
+shopEntity.png
+size: 128,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+bar
+  rotate: false
+  xy: 1, 1
+  size: 6, 106
+  orig: 6, 106
+  offset: 0, 0
+  index: -1
+table
+  rotate: false
+  xy: 9, 84
+  size: 56, 23
+  orig: 56, 23
+  offset: 0, 0
+  index: -1
