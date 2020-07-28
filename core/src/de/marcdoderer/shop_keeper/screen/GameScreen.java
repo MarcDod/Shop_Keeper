@@ -3,44 +3,17 @@ package de.marcdoderer.shop_keeper.screen;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.strongjoshua.console.Console;
 import com.strongjoshua.console.GUIConsole;
-import de.marcdoderer.shop_keeper.animation.IdleAnimation;
-import de.marcdoderer.shop_keeper.animation.MoveAnimation;
-import de.marcdoderer.shop_keeper.entities.EntityManager;
-import de.marcdoderer.shop_keeper.entities.Player;
-import de.marcdoderer.shop_keeper.entities.items.Item;
-import de.marcdoderer.shop_keeper.entities.items.ItemFactory;
-import de.marcdoderer.shop_keeper.listener.ExitZoneListener;
-import de.marcdoderer.shop_keeper.listener.TradeItemListener;
 import de.marcdoderer.shop_keeper.manager.GameData;
 import de.marcdoderer.shop_keeper.manager.GameManager;
-import de.marcdoderer.shop_keeper.manager.ItemData;
-import de.marcdoderer.shop_keeper.manager.PlaceData;
-import de.marcdoderer.shop_keeper.movement.PlayerController;
 import de.marcdoderer.shop_keeper.screen.state.GameState;
 import de.marcdoderer.shop_keeper.screen.state.StateManager;
-import de.marcdoderer.shop_keeper.shop.Basement;
-import de.marcdoderer.shop_keeper.shop.Basement2;
-import de.marcdoderer.shop_keeper.shop.Place;
-import de.marcdoderer.shop_keeper.shop.Shop;
-import de.marcdoderer.shop_keeper.shop.time.DayNightCircle;
-import de.marcdoderer.shop_keeper.util.FrameRate;
-
-import java.util.LinkedList;
+import de.marcdoderer.shop_keeper.util.GameCommandExecutor;
 
 public class GameScreen extends ScreenAdapter {
 
@@ -71,7 +44,7 @@ public class GameScreen extends ScreenAdapter {
         this.console.setPosition(50, 50);
         this.console.setVisible(false);
         this.console.setDisplayKeyID(Input.Keys.UP);
-        this.console.setCommandExecutor(new GameCommandExecutor(console));
+        this.console.setCommandExecutor(new GameCommandExecutor(console, gameState));
         this.console.setDisabled(false);
 
         Gdx.input.setInputProcessor(new InputAdapter(){

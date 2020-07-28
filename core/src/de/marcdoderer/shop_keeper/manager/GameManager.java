@@ -2,9 +2,13 @@ package de.marcdoderer.shop_keeper.manager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.utils.Base64Coder;
 import com.badlogic.gdx.utils.Json;
+import de.marcdoderer.shop_keeper.entities.Entity;
 import de.marcdoderer.shop_keeper.entities.EntityFactory;
+import de.marcdoderer.shop_keeper.entities.items.ItemFactory;
 import de.marcdoderer.shop_keeper.shop.Basement;
+import de.marcdoderer.shop_keeper.shop.Place;
 import de.marcdoderer.shop_keeper.shop.Shop;
 import de.marcdoderer.shop_keeper.shop.loader.ShopLoader;
 

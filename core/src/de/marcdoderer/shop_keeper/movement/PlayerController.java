@@ -70,7 +70,8 @@ public class PlayerController {
         final Zone clickedZone = getClickedZone(pos);
         if(clickedZone == null) return;
         if(clickedZone.getZoneID() == player.getCurrentZoneID()){
-            clickedZone.startEvent();
+            if(move == null)
+                clickedZone.startEvent();
             return;
         }
 

@@ -67,7 +67,6 @@ public abstract class PlaceLoader {
         EntityFactory factory = new EntityFactory(gameState);
         ItemFactory itemFactory = new ItemFactory(gameState);
         for(EntityData data : entityData) {
-            if(data.getName().equals("")) continue;
             Entity e = factory.createEntity(data.getType(), new Vector2(data.getPosX(), data.getPosY()), data.getWidth(), data.getHeight(), data.getName(), gameState.world);
             if(data.getCarriedItem() != null){
                 ((ItemCarryingEntity) e).carryItem(itemFactory.createItem(data.getCarriedItem(), new Vector2(0, 0), gameState.world));
