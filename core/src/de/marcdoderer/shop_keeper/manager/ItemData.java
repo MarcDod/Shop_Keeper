@@ -1,5 +1,6 @@
 package de.marcdoderer.shop_keeper.manager;
 
+import de.marcdoderer.shop_keeper.entities.items.Item;
 import de.marcdoderer.shop_keeper.entities.items.ItemFactory;
 
 public class ItemData {

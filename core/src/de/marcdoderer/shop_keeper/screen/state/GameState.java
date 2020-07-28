@@ -56,6 +56,9 @@ public class GameState extends State{
 
     public final ExitZoneListener exitZoneListener;
     public final TradeItemListener tradeItemListener;
+
+    private boolean openMenu;
+
     public GameState(final GameScreen screen){
         exitZoneListener = new ExitZoneListener(this);
         tradeItemListener = new TradeItemListener(this);
@@ -138,11 +141,22 @@ public class GameState extends State{
     public void keyPressed(int keyCode) {
         if(keyCode == Input.Keys.ENTER)
             debugOn = !debugOn;
+        //TODO correct keyCode
+        else if(keyCode == Input.Keys.TAB){
+            ingameHud.setVisible(false);
+            render(screen.batch);
+            this.screen.stateManager.push(new MenuState(screen));
+        }
     }
 
     @Override
     public void mouseClicked(float x, float y) {
         playerController.clickEvent(new Vector2(x, y));
+    }
+
+    @Override
+    public void resume() {
+        this.ingameHud.setVisible(true);
     }
 
     @Override

@@ -6,4 +6,5 @@ public interface HudElement {
     void render(SpriteBatch batch);
     void update(float delta);
     void dispose();
+    void setVisible(final boolean visible);
 }

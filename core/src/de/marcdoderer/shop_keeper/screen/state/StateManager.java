@@ -14,9 +14,15 @@ public class StateManager {
         return stateStack.peek();
     }
 
+    /**
+     * Requires stateStach.size() > 1;
+     * @return state at the top of the stateStack;
+     */
     public State pop(){
-        if(!stateStack.empty()){
-            return stateStack.pop();
+        if(stateStack.size() > 1 ){
+            State state = stateStack.pop();
+            stateStack.peek().resume();
+            return state;
         }
         return null;
     }

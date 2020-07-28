@@ -49,7 +49,7 @@ public class GameManager {
             gameData.setTimeInSeconds(0f);
 
             saveData();
-        }{
+        }else {
             loadData();
         }
     }

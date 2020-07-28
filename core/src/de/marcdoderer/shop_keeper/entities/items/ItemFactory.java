@@ -19,7 +19,7 @@ public class ItemFactory {
         APPLE, GOLD, PICKAXE
     }
 
-    public ItemFactory(GameState gameState){
+    public ItemFactory(final GameState gameState){
         this.gameState = gameState;
     }
 
