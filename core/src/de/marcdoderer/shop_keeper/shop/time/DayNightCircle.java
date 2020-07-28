@@ -34,15 +34,20 @@ public class DayNightCircle implements HudElement {
     public float getSeconds(){
         return this.seconds;
     }
+    public void setSeconds(final float seconds){
+        this.seconds = seconds;
+        System.out.println((int) ((seconds * speedUp) / 60f) / 60f);
+        update(0f);
+    }
 
     @Override
     public final void update(final float delta){
-        seconds += delta;
-        minutes = (int) ((seconds * speedUp) / 60f);
+        seconds += delta * speedUp;
+        minutes = (int) ((seconds) / 60f);
         hours = (int) ((minutes) / 60f);
         minutes %= 60;
 
-        if(hours == 24){
+        if(hours >= 24){
             seconds = 0;
         }
         hours %= 24;
@@ -50,7 +55,7 @@ public class DayNightCircle implements HudElement {
     }
 
     private float getSunIntensity(){
-        return Math.max(Math.abs((Math.min((float)Math.cos(seconds * speedUp * 0.000036f * 2), 0.6f))), 0.3f);
+        return Math.max(Math.abs((Math.min((float)Math.cos(seconds * 0.000036f * 2), 0.6f))), 0.3f);
     }
 
     public Color getSunColor(){
@@ -62,7 +67,7 @@ public class DayNightCircle implements HudElement {
     }
 
     public float getAmbientLight(){
-        return (Math.max((float)Math.sin(seconds * speedUp * 0.000036f), 0.3f));
+        return (Math.max((float)Math.sin(seconds * 0.000036f), 0.3f));
     }
 
     public boolean isNight(){
@@ -82,7 +87,7 @@ public class DayNightCircle implements HudElement {
         this.seconds = 0;
     }
 
-    public String timeToString(int time){
+    private String timeToString(int time){
         String timeString = String.valueOf(time);
         if(timeString.length() > 1)
             return timeString;

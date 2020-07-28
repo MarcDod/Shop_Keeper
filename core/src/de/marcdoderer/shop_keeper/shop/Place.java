@@ -120,6 +120,7 @@ public abstract class Place {
     public PlaceData getPlaceData(){
         PlaceData placeData = new PlaceData();
         List<Entity> entitiesList = manager.getEntities();
+        boolean removed = entitiesList.remove(gameState.player);
         EntityData[] entityDatas = new EntityData[entitiesList.size()];
 
         for(int i = 0; i < entityDatas.length; i++){
@@ -127,6 +128,9 @@ public abstract class Place {
         }
 
         placeData.setEntity(entityDatas);
+        if(removed){
+            entitiesList.add(gameState.player);
+        }
         return placeData;
     }
 

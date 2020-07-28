@@ -57,7 +57,7 @@ public class GameManager {
     public void saveData(){
         if(gameData != null){
             Preferences pref = Gdx.app.getPreferences("de.marcdoderer.shop_keeper.preferences");
-            pref.putString("GameData", Base64Coder.encodeString(json.prettyPrint(gameData)));
+            pref.putString("GameData", json.prettyPrint(gameData));
             pref.flush();
         }
     }
@@ -65,6 +65,6 @@ public class GameManager {
     public void loadData(){
         Preferences pref = Gdx.app.getPreferences("de.marcdoderer.shop_keeper.preferences");
         String gameDataJsonString = pref.getString("GameData");
-        gameData = json.fromJson(GameData.class, Base64Coder.decodeString(gameDataJsonString));
+        gameData = json.fromJson(GameData.class, gameDataJsonString);
     }
 }
