@@ -7,7 +7,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import de.marcdoderer.shop_keeper.entities.items.Item;
 import de.marcdoderer.shop_keeper.entities.items.ItemCarry;
 import de.marcdoderer.shop_keeper.manager.EntityData;
-import de.marcdoderer.shop_keeper.manager.ItemData;
 
 public class ItemCarryingEntity extends Entity implements ItemCarry {
 
@@ -60,8 +59,7 @@ public class ItemCarryingEntity extends Entity implements ItemCarry {
             data.setItemData(null);
             return data;
         }
-        data.setItemData(new ItemData());
-        data.getCarriedItem().setType(carriedItem.type);
+        data.setItemData(carriedItem.data);
         return data;
     }
 }

@@ -70,8 +70,8 @@ public abstract class PlaceLoader {
         for(EntityData data : entityData) {
             Entity e = factory.createEntity(data.getType(), new Vector2(data.getPosX(), data.getPosY()), data.getWidth(), data.getHeight(), data.getName(), gameState.world);
             if(data.getCarriedItem() != null){
-                ((ItemCarryingEntity) e).carryItem(itemFactory.createItem(data.getCarriedItem().getType(), new Vector2(0, 0), gameState.world));
-                itemLayerList.put(data.getCarriedItem().getType().name(), ((ItemCarryingEntity) e).getCarriedItem());
+                ((ItemCarryingEntity) e).carryItem(itemFactory.createItem(data.getCarriedItem(), new Vector2(0, 0), gameState.world));
+                itemLayerList.put(data.getCarriedItem().name, ((ItemCarryingEntity) e).getCarriedItem());
             }
             //TODO: make entity name uniqe
             entityList.put(data.getName(), e);
