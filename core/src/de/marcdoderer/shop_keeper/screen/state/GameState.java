@@ -16,8 +16,6 @@ import de.marcdoderer.shop_keeper.entities.items.Item;
 import de.marcdoderer.shop_keeper.entities.items.ItemFactory;
 import de.marcdoderer.shop_keeper.listener.ExitZoneListener;
 import de.marcdoderer.shop_keeper.listener.TradeItemListener;
-import de.marcdoderer.shop_keeper.manager.EntityData;
-import de.marcdoderer.shop_keeper.manager.ItemData;
 import de.marcdoderer.shop_keeper.manager.PlaceData;
 import de.marcdoderer.shop_keeper.manager.PlayerData;
 import de.marcdoderer.shop_keeper.movement.PlayerController;
@@ -47,7 +45,7 @@ public class GameState extends State{
 
     public final DayNightCircle dayNightCircle;
 
-    private Place[] places;
+    private final Place[] places;
     private int currentPlace;
 
     public final PlayerController playerController;
@@ -202,7 +200,7 @@ public class GameState extends State{
         player.setCurrentZoneID(playerData.getPlayerZoneID());
         player.startAnimation(MovableEntity.IDLE_ANIMATION);
         if(playerData.getCarriedItem() != null){
-            Item item = itemFactory.createItem(playerData.getCarriedItem().getType(), new Vector2(0, 0), world);
+            Item item = itemFactory.createItem(playerData.getCarriedItem(), new Vector2(0, 0), world);
             player.carryItem(item);
         }
 
@@ -215,9 +213,7 @@ public class GameState extends State{
         playerData.setPlayerZoneID(player.getCurrentZoneID());
 
         if(player.getCarriedItem() != null){
-            final ItemData itemData = new ItemData();
-            itemData.setType(player.getCarriedItem().type);
-            playerData.setItemData(itemData);
+            playerData.setItemData(player.getCarriedItem().data);
         }
         return playerData;
     }
