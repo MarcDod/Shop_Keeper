@@ -12,7 +12,6 @@ import de.marcdoderer.shop_keeper.entities.CharacterFactory;
 import de.marcdoderer.shop_keeper.entities.EntityManager;
 import de.marcdoderer.shop_keeper.entities.MovableEntity;
 import de.marcdoderer.shop_keeper.entities.Player;
-import de.marcdoderer.shop_keeper.entities.items.Item;
 import de.marcdoderer.shop_keeper.entities.items.ItemFactory;
 import de.marcdoderer.shop_keeper.listener.ExitZoneListener;
 import de.marcdoderer.shop_keeper.listener.TradeItemListener;
@@ -192,16 +191,14 @@ public class GameState extends State{
      */
     private Player initPlayer(final PlayerData playerData){
         final CharacterFactory characterFabric = new CharacterFactory(this);
-        final ItemFactory itemFactory = new ItemFactory(this);
 
         final Vector2 position = places[currentPlace].getGraph().getNodeMetaData(playerData.getPlayerZoneID()).getCenter();
         final Player player = characterFabric.createPlayer("Player", position, world);
 
         player.setCurrentZoneID(playerData.getPlayerZoneID());
         player.startAnimation(MovableEntity.IDLE_ANIMATION);
-        if(playerData.getCarriedItem() != null){
-            Item item = itemFactory.createItem(playerData.getCarriedItem(), new Vector2(0, 0), world);
-            player.carryItem(item);
+        if (playerData.getCarriedItemID() != null) {
+            player.carryItem(ItemFactory.getItemRegistry().createItemByID(playerData.getCarriedItemID()));
         }
 
         return player;
@@ -213,7 +210,7 @@ public class GameState extends State{
         playerData.setPlayerZoneID(player.getCurrentZoneID());
 
         if(player.getCarriedItem() != null){
-            playerData.setItemData(player.getCarriedItem().data);
+            playerData.setCarriedItemID(player.getCarriedItem().id);
         }
         return playerData;
     }
