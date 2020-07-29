@@ -19,6 +19,7 @@ public class StartScreen extends ScreenAdapter {
         shop_keeper.assetManager.load("npc/atlas/npc.atlas", TextureAtlas.class);
         shop_keeper.assetManager.load("shop/entity/atlas/shopEntity.atlas", TextureAtlas.class);
         shop_keeper.assetManager.load("items/atlas/items.atlas", TextureAtlas.class);
+        shop_keeper.assetManager.load("menu/menu.png", Texture.class);
     }
 
     @Override

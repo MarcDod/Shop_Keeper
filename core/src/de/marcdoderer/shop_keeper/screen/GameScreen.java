@@ -18,8 +18,8 @@ import de.marcdoderer.shop_keeper.util.GameCommandExecutor;
 public class GameScreen extends ScreenAdapter {
 
 
-    private final SpriteBatch batch;
-    private final ShapeRenderer shapeRenderer;
+    public final SpriteBatch batch;
+    public final ShapeRenderer shapeRenderer;
 
     public final StretchViewport viewport;
 
