@@ -22,7 +22,7 @@ public class GameManager {
             gameData.setPlayerData(new PlayerData());
             gameData.getPlayerData().setPlayerPlaceID(Shop.SHOP_ID);
             gameData.getPlayerData().setPlayerZoneID(ShopLoader.START);
-            gameData.getPlayerData().setItemData(new ItemData("shopKeeper", "gold", 1.6f, 1.6f));
+            gameData.getPlayerData().setCarriedItemID("shopKeeper:gold");
 
             PlaceData[] placeData = new PlaceData[3];
             placeData[Shop.SHOP_ID] = new PlaceData();

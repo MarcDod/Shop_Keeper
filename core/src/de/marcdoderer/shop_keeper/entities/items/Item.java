@@ -8,10 +8,10 @@ import de.marcdoderer.shop_keeper.manager.ItemData;
 
 public class Item extends MovableEntity {
 
-    public final ItemData data;
+    public final String id;
 
     public Item(Sprite sprite, Body body, SpriteAnimator moveAnimation, SpriteAnimator idleAnimation, ItemData data) {
         super(sprite, body, moveAnimation, idleAnimation);
-        this.data = data;
+        this.id = data.getFullID();
     }
 }
