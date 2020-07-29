@@ -138,6 +138,10 @@ public class GameState extends State{
     public void keyPressed(int keyCode) {
         if(keyCode == Input.Keys.ENTER)
             debugOn = !debugOn;
+        //TODO correct keyCode
+        else if(keyCode == Input.Keys.TAB){
+            this.screen.stateManager.push(new MenuState(screen));
+        }
     }
 
     @Override
