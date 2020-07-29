@@ -7,7 +7,7 @@ uniform mat4 u_projTrans;
 varying vec4 v_color;
 varying vec2 v_texCoords;
 
-void main(void) {
+void main(void){
     v_color = a_color;
     v_texCoords = a_texCoord0;
     gl_Position = u_projTrans * a_position;
