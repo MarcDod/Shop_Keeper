@@ -4,6 +4,7 @@ import de.marcdoderer.shop_keeper.entities.EntityManager;
 import de.marcdoderer.shop_keeper.entities.Player;
 import de.marcdoderer.shop_keeper.entities.items.Item;
 import de.marcdoderer.shop_keeper.movement.ExitZone;
+import de.marcdoderer.shop_keeper.movement.InteractiveZone;
 import de.marcdoderer.shop_keeper.movement.Zone;
 import de.marcdoderer.shop_keeper.screen.GameScreen;
 import de.marcdoderer.shop_keeper.screen.state.GameState;
@@ -18,7 +19,7 @@ public class ExitZoneListener implements ZoneListener{
     }
 
     @Override
-    public void perform(Zone source) {
+    public void perform(InteractiveZone source, int eventID) {
         if(!(source instanceof ExitZone)) throw new IllegalArgumentException("source has to be form class ExitZone");
         ExitZone exitZone = (ExitZone) source;
 

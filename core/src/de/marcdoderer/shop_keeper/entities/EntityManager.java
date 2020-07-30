@@ -70,6 +70,10 @@ public class EntityManager {
     }
 
 
+    public boolean hasEntity(final Entity entity){
+        return entityLayerList.contains(entity) || itemLayerList.contains(entity) || topLayerList.contains(entity);
+    }
+
     public void addEntity(final Layer layer, final Entity entity){
         switch(layer){
             case ENTITY_LAYER:

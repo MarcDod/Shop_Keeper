@@ -75,10 +75,6 @@ public class GameScreen extends ScreenAdapter {
         final Vector2 mouseClick = viewport.unproject(new Vector2(screenX, screenY));
         this.stateManager.peek().mouseClicked(mouseClick.x, mouseClick.y);
 
-        //TEST
-        if(mouseClick.x < 1 && mouseClick.y < 1){
-            save();
-        }
     }
 
     private void keyClicked(final int keyCode){

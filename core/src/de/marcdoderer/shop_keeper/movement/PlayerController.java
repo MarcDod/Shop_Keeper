@@ -71,7 +71,7 @@ public class PlayerController {
         if(clickedZone == null) return;
         if(clickedZone.getZoneID() == player.getCurrentZoneID()){
             if(move == null)
-                clickedZone.startEvent();
+                clickedZone.startEvent(1);
             return;
         }
 
@@ -79,8 +79,10 @@ public class PlayerController {
         if(move == null) {
             move = createMove(clickedZone);
         }else{
-            move.requestCancel();
-            clickedRequestZone = clickedZone;
+            if(clickedZone != move.getDestinationZone()) {
+                move.requestCancel();
+                clickedRequestZone = clickedZone;
+            }
         }
     }
 
@@ -129,7 +131,7 @@ public class PlayerController {
                 player.stopAnimation(MovableEntity.MOVE_ANIMATION);
                 player.startAnimation(MovableEntity.IDLE_ANIMATION);
                 final Zone zone = graph.getNodeMetaData(player.getCurrentZoneID());
-                zone.startEvent();
+                zone.startEvent(0);
                 move = null;
             }
         }

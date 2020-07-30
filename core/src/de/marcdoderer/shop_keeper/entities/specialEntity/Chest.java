@@ -5,11 +5,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import de.marcdoderer.shop_keeper.entities.ItemCarryingEntity;
 import de.marcdoderer.shop_keeper.entities.items.Item;
+import de.marcdoderer.shop_keeper.entities.items.ItemFactory;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Chest extends ItemCarryingEntity {
+
+    private final List<String> itemIDs;
+
 
     /**
      * Requires body.getUserData() instance Of BodyDef
@@ -21,6 +26,7 @@ public class Chest extends ItemCarryingEntity {
      */
     public Chest(Sprite sprite, Body body, String entityType) {
         super(sprite, body, entityType);
+        this.itemIDs = new ArrayList<>();
     }
 
     @Override
@@ -30,8 +36,16 @@ public class Chest extends ItemCarryingEntity {
 
     @Override
     public void carryItem(Item item) {
-        super.carryItem(item);
+        this.itemIDs.add(item.id);
     }
 
+    public void selectItem(final int index){
+        this.carriedItem = ItemFactory.getItemRegistry().createItemByID(itemIDs.get(index));
+    }
 
+    @Override
+    public void removeCarriedItem() {
+        this.itemIDs.remove(getCarriedItem().id);
+        super.removeCarriedItem();
+    }
 }

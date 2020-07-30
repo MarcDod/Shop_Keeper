@@ -32,9 +32,9 @@ public class IngameHud {
     }
 
     public void render(final SpriteBatch batch){
-        batch.setProjectionMatrix(hudCamera.combined);
         batch.begin();
         for(HudElement hudElement: hudElements){
+            batch.setProjectionMatrix(hudCamera.combined);
             hudElement.render(batch);
         }
         batch.end();

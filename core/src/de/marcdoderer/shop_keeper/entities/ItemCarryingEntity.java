@@ -11,7 +11,7 @@ import de.marcdoderer.shop_keeper.manager.EntityData;
 
 public class ItemCarryingEntity extends Entity implements ItemCarry {
 
-    private Item carriedItem;
+    protected Item carriedItem;
 
     /**
      * Requires body.getUserData() instance Of BodyDef

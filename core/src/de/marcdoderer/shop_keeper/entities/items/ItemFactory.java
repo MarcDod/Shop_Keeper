@@ -32,7 +32,8 @@ public class ItemFactory {
             final ItemFactory itemFactory = new ItemFactory(gameState);
             ItemData[] defaultItems = {new ItemData("shopKeeper", "apple", 2f, 2f),
                     new ItemData("shopKeeper", "gold", 1.6f, 1.6f),
-                    new ItemData("shopKeeper", "pickaxe", 3f, 3f)};
+                    new ItemData("shopKeeper", "pickaxe", 3f, 3f),
+                    new ItemData("shopKeeper", "pickaxe2", 3f, 3f)};
             for (ItemData defaultItem : defaultItems) {
                 itemFactory.registerItemData(defaultItem.getFullID(), defaultItem);
             }

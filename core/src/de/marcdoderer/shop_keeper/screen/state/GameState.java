@@ -1,5 +1,6 @@
 package de.marcdoderer.shop_keeper.screen.state;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,13 +14,19 @@ import de.marcdoderer.shop_keeper.entities.EntityManager;
 import de.marcdoderer.shop_keeper.entities.MovableEntity;
 import de.marcdoderer.shop_keeper.entities.Player;
 import de.marcdoderer.shop_keeper.entities.items.ItemFactory;
+import de.marcdoderer.shop_keeper.entities.specialEntity.Chest;
+import de.marcdoderer.shop_keeper.listener.ChestListener;
 import de.marcdoderer.shop_keeper.listener.ExitZoneListener;
 import de.marcdoderer.shop_keeper.listener.TradeItemListener;
+import de.marcdoderer.shop_keeper.manager.EntityData;
+import de.marcdoderer.shop_keeper.manager.ItemData;
 import de.marcdoderer.shop_keeper.manager.PlaceData;
 import de.marcdoderer.shop_keeper.manager.PlayerData;
 import de.marcdoderer.shop_keeper.movement.PlayerController;
+import de.marcdoderer.shop_keeper.movement.Zone;
 import de.marcdoderer.shop_keeper.screen.GameScreen;
 import de.marcdoderer.shop_keeper.screen.hud.IngameHud;
+import de.marcdoderer.shop_keeper.screen.hud.InventarHud;
 import de.marcdoderer.shop_keeper.shop.Basement;
 import de.marcdoderer.shop_keeper.shop.Basement2;
 import de.marcdoderer.shop_keeper.shop.Place;
@@ -53,18 +60,23 @@ public class GameState extends State{
 
     public final ExitZoneListener exitZoneListener;
     public final TradeItemListener tradeItemListener;
+    public final ChestListener chestListener;
+
+    private InventarHud inventarHud;
+
     public GameState(final GameScreen screen){
         exitZoneListener = new ExitZoneListener(this);
         tradeItemListener = new TradeItemListener(this);
+        chestListener = new ChestListener(this);
         this.gameCamera = new OrthographicCamera(WIDTH, HEIGHT);
         this.ingameHud = new IngameHud();
         this.world = new World(new Vector2(0,0), false);
         this.debugRenderer = new Box2DDebugRenderer();
+        this.screen = screen;
         this.dayNightCircle = new DayNightCircle(screen.gameManager.gameData.getTimeInSeconds());
         this.ingameHud.addHudElement(dayNightCircle);
         this.ingameHud.addHudElement(new FrameRate());
         this.debugOn = false;
-        this.screen = screen;
         this.currentPlace = screen.gameManager.gameData.getPlayerData().getPlayerPlaceID();
 
         this.places = initPlaces();
@@ -103,6 +115,22 @@ public class GameState extends State{
         }
     }
 
+    public void openInventar(final Chest chest){
+        inventarHud = new InventarHud(this, chest, gameCamera);
+        this.ingameHud.addHudElement(inventarHud);
+        this.playerController.setActive(false);
+    }
+    public void closeInventar(){
+        this.ingameHud.removeHudElement(inventarHud);
+        this.playerController.setActive(true);
+        this.inventarHud.dispose();
+        this.inventarHud = null;
+    }
+
+    public Zone getPlayerZone(){
+        return getCurrentPlace().getGraph().getNodeMetaData(player.getCurrentZoneID());
+    }
+
     @Override
     public void update(float delta) {
         updateWorld(delta);
@@ -116,7 +144,7 @@ public class GameState extends State{
     }
 
     @Override
-    public void resize(float width, float height) {
+    public void resize(int width, int height) {
         ingameHud.resize(width, height);
     }
 
@@ -135,11 +163,25 @@ public class GameState extends State{
     public void keyPressed(int keyCode) {
         if(keyCode == Input.Keys.ENTER)
             debugOn = !debugOn;
+        else if(keyCode == MenuManager.MENU_KEY){
+            ingameHud.setVisible(false);
+            render(screen.batch);
+            this.screen.stateManager.push(MenuManager.getInGameMenuState(this.screen));
+        }
     }
 
     @Override
     public void mouseClicked(float x, float y) {
         playerController.clickEvent(new Vector2(x, y));
+        if(inventarHud != null){
+            inventarHud.clickEvent(x, y);
+        }
+    }
+
+    @Override
+    public void resume() {
+        this.ingameHud.setVisible(true);
+        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     @Override
