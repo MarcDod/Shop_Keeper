@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import de.marcdoderer.shop_keeper.animation.IdleAnimation;
 import de.marcdoderer.shop_keeper.animation.MoveAnimation;
 import de.marcdoderer.shop_keeper.manager.ItemData;
+import de.marcdoderer.shop_keeper.manager.ModManager;
 import de.marcdoderer.shop_keeper.screen.state.GameState;
 import de.marcdoderer.shop_keeper.util.Util;
 
@@ -23,20 +24,14 @@ public class ItemFactory {
         this.gameState = gameState;
         this.itemDatas = new HashMap<>(3);//@TODO initial Capacity for performance
         itemRegistry = this;
+        ModManager.getModManager().loadModData();
     }
 
     public static ItemFactory getItemRegistry(GameState gameState) {
         if (itemRegistry != null) {
             return itemRegistry;
         } else {
-            final ItemFactory itemFactory = new ItemFactory(gameState);
-            ItemData[] defaultItems = {new ItemData("shopKeeper", "apple", 2f, 2f),
-                    new ItemData("shopKeeper", "gold", 1.6f, 1.6f),
-                    new ItemData("shopKeeper", "pickaxe", 3f, 3f)};
-            for (ItemData defaultItem : defaultItems) {
-                itemFactory.registerItemData(defaultItem.getFullID(), defaultItem);
-            }
-            return itemFactory;
+            return new ItemFactory(gameState);
         }
     }
 
@@ -56,21 +51,24 @@ public class ItemFactory {
      * @return the item
      */
     public Item createItem(final ItemData data, final Vector2 position, final World world) {
-        Item itemEntity = createEntity(data, "items/atlas/items.atlas"/*@TODO item /ModID/name.atlas */, data.getName(),
+        return createEntity(data, ModManager.getModManager().getAtlas(data.getModID()), data.getName(),
                 position, world, data.getWidth(), data.getHeigth());
-        return itemEntity;
     }
 
-    private Item createEntity(ItemData data, String atlasUrl, String itemName, Vector2 position, World world, float width, float height) {
-        TextureAtlas atlas = gameState.screen.assetManager.get(atlasUrl);
-        TextureRegion texture = atlas.findRegion(itemName);
-        Sprite sprite = new Sprite(texture);
-        sprite.setSize(width, height);
-        sprite.setOriginCenter();
+    private Item createEntity(ItemData data, TextureAtlas atlas, String itemName, Vector2 position, World world, float width, float height) {
+        Sprite sprite = getSprite(atlas, itemName, width, height);
 
         Body entityBody = Util.crateKinematicBody(width / 2, height / 2, position.x, position.y, world);
 
         return new Item(sprite, entityBody, new MoveAnimation(sprite), new IdleAnimation(sprite), data);
+    }
+
+    private Sprite getSprite(TextureAtlas atlas, String itemName, float width, float height) {
+        TextureRegion texture = atlas.findRegion(itemName);
+        Sprite sprite = new Sprite(texture);
+        sprite.setSize(width, height);
+        sprite.setOriginCenter();
+        return sprite;
     }
 
     public ItemData getItemData(Item item) {
@@ -81,7 +79,15 @@ public class ItemFactory {
         return this.createItem(itemDatas.get(id), new Vector2(0, 0), gameState.world);
     }
 
-    private void registerItemData(String id, ItemData data) {
+    public void registerItemData(String id, ItemData data) {
         this.itemDatas.put(id, data);
+    }
+
+    public Sprite getSpriteByItemID(String itemID) {
+        final ItemData itemData = itemDatas.get(itemID);
+        return getSprite(ModManager.getModManager().getAtlas(itemData.getModID()),
+                itemData.getName(),
+                itemData.getWidth(),
+                itemData.getHeigth());
     }
 }
