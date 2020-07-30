@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.strongjoshua.console.Console;
 import com.strongjoshua.console.GUIConsole;
+import de.marcdoderer.shop_keeper.Shop_Keeper;
 import de.marcdoderer.shop_keeper.manager.GameData;
 import de.marcdoderer.shop_keeper.manager.GameManager;
 import de.marcdoderer.shop_keeper.screen.state.GameState;
@@ -35,6 +36,8 @@ public class GameScreen extends ScreenAdapter {
         this.batch = new SpriteBatch();
         this.shapeRenderer = new ShapeRenderer();
         this.gameManager = new GameManager();
+        Shop_Keeper.vSync = gameManager.gameData.getVSync();
+        Gdx.graphics.setVSync(Shop_Keeper.vSync);
         this.assetManager = assetManager;
         this.gameState = new GameState(this);
         this.stateManager = new StateManager(gameState);
@@ -88,6 +91,7 @@ public class GameScreen extends ScreenAdapter {
         gameManager.gameData.setTimeInSeconds(gameState.dayNightCircle.getSeconds());
         gameManager.gameData.setPlayerData(gameState.getPlayerData());
         gameManager.gameData.setPlaceDatas(gameState.getPlaceData());
+        gameManager.gameData.setVsync(Shop_Keeper.vSync);
 
         gameManager.saveData();
     }
@@ -116,15 +120,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void update(float delta){
-        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
-            if(Gdx.graphics.isFullscreen()){
-                Gdx.graphics.setVSync(false);
-                Gdx.graphics.setWindowedMode(GameState.WIDTH * GameState.SCALE, GameState.HEIGHT * GameState.SCALE);
-            }else{
-                Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
-            }
-            Gdx.graphics.setVSync(true);
-        }else if(Gdx.input.isKeyJustPressed(Input.Keys.M)){
+        if(Gdx.input.isKeyJustPressed(Input.Keys.M)){
             save();
         }
 

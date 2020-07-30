@@ -47,6 +47,7 @@ public class GameManager {
             gameData.setPlaceDatas(placeData);
 
             gameData.setTimeInSeconds(0f);
+            gameData.setVsync(true);
 
             saveData();
         }else {

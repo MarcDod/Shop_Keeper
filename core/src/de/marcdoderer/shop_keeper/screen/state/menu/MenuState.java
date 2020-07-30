@@ -1,23 +1,26 @@
-package de.marcdoderer.shop_keeper.screen.state;
+package de.marcdoderer.shop_keeper.screen.state.menu;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.*;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import de.marcdoderer.shop_keeper.screen.GameScreen;
+import de.marcdoderer.shop_keeper.screen.state.GameState;
+import de.marcdoderer.shop_keeper.screen.state.State;
 
-public class MenuState extends State{
+import java.awt.*;
+import java.util.LinkedList;
+import java.util.List;
+
+public abstract class MenuState extends State {
 
     public final static float GRAY_VALUE = 0.5f;
     public final static float WIDTH = GameState.WIDTH * 0.3f;
@@ -30,15 +33,18 @@ public class MenuState extends State{
     public final Texture menuForeground;
     public final GameScreen screen;
 
-    private final OrthographicCamera camera;
-    private final ShaderProgram grayShader;
+    protected final OrthographicCamera camera;
+    protected final ShaderProgram grayShader;
 
-    private final TextButton optionButton;
-    private final Stage stage;
+    protected final List<MenuPage> menuPages;
 
-    private InputProcessor originInputProcessor;
+    protected final Stage stage;
 
-    public MenuState(final GameScreen screen){
+    protected InputProcessor originInputProcessor;
+    protected int currentPage;
+
+    private MenuState(final GameScreen screen, final int page){
+        this.currentPage = page;
         background = ScreenUtils.getFrameBufferTexture();
         menuForeground = screen.assetManager.get("menu/menu.png");
         this.screen = screen;
@@ -51,33 +57,26 @@ public class MenuState extends State{
             System.out.println(grayShader.getLog());
         }
 
+        this.menuPages = new LinkedList<MenuPage>();
+
         this.stage = new Stage();
-        InputMultiplexer inputMultiplexer = new InputMultiplexer();
         originInputProcessor = Gdx.input.getInputProcessor();
-
-        inputMultiplexer.addProcessor(stage);
-        inputMultiplexer.addProcessor(originInputProcessor);
-        Gdx.input.setInputProcessor(inputMultiplexer);
-
-        Skin skin = new Skin(Gdx.files.internal("menu/button/uiskin.json"));
-        Group group = new Group();
-        group.setBounds(MENU_X * GameState.SCALE, MENU_Y * GameState.SCALE, WIDTH * GameState.SCALE, HEIGHT * GameState.SCALE);
-        this.optionButton = new TextButton("hallo", skin);
-        this.optionButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                optionAction();
-            }
-        });
-        optionButton.setSize(100, 100);
-
-        group.addActor(optionButton);
-
-        this.stage.addActor(group);
     }
 
-    private void optionAction(){
+    public MenuState(GameScreen screen){
+        this(screen, 0);
+    }
 
+    public void loadLastPage(){
+        stage.getRoot().removeActor(menuPages.get(currentPage).getGroup());
+        this.currentPage--;
+        stage.addActor(menuPages.get(currentPage).getGroup());
+    }
+
+    public void loadNextPage(){
+        stage.getRoot().removeActor(menuPages.get(currentPage).getGroup());
+        this.currentPage++;
+        stage.addActor(menuPages.get(currentPage).getGroup());
     }
 
     @Override
@@ -102,56 +101,33 @@ public class MenuState extends State{
         batch.end();
 
         this.stage.draw();
-
-    }
-
-    @Override
-    public void renderShapes(ShapeRenderer shapeRenderer) {
-
-    }
-
-    @Override
-    public void update(float delta) {
-
-    }
-
-    @Override
-    public void resize(float width, float height) {
-
     }
 
     @Override
     public void dispose() {
         background.getTexture().dispose();
         grayShader.dispose();
-        optionButton.getSkin().dispose();
         this.stage.dispose();
         Gdx.input.setInputProcessor(originInputProcessor);
-    }
-
-    @Override
-    public void keyPressed(int keyCode) {
-        if(keyCode == Input.Keys.TAB){
-            this.dispose();
-            this.screen.stateManager.pop();
+        for(MenuPage page : menuPages){
+            page.dispose();
         }
     }
 
     @Override
-    public void mouseClicked(float x, float y) {
-
+    public OrthographicCamera getCamera() {
+        return camera;
     }
 
-    @Override
-    public void resume() {
+    public InputProcessor getInputProcessor(){
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
-        originInputProcessor = Gdx.input.getInputProcessor();
         inputMultiplexer.addProcessor(stage);
         inputMultiplexer.addProcessor(originInputProcessor);
+        return inputMultiplexer;
     }
 
     @Override
-    public OrthographicCamera getCamera() {
-        return null;
+    public void resize(int width, int height) {
+        this.stage.getViewport().update(width, height);
     }
 }

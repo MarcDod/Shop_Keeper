@@ -9,7 +9,7 @@ public abstract class State {
     public abstract void render(final SpriteBatch batch);
     public abstract void renderShapes(final ShapeRenderer shapeRenderer);
     public abstract void update(final float delta);
-    public abstract void resize(final float width, final float height);
+    public abstract void resize(final int width, final int height);
     public abstract void dispose();
     public abstract void keyPressed(final int keyCode);
     public abstract void mouseClicked(final float x, final float y);

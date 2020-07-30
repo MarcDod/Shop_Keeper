@@ -5,6 +5,7 @@ public class GameData {
     private PlayerData playerData;
     private float timeInSeconds;
     private PlaceData[] placeDatas;
+    private boolean vSync;
 
 
     public PlayerData getPlayerData() {
@@ -27,6 +28,14 @@ public class GameData {
 
     public void setPlaceDatas(PlaceData[] placeDatas){
         this.placeDatas = placeDatas;
+    }
+
+    public void setVsync(boolean vSync){
+        this.vSync = vSync;
+    }
+
+    public boolean getVSync(){
+        return this.vSync;
     }
 
 }

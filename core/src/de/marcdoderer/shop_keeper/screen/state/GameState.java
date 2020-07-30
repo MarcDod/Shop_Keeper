@@ -1,5 +1,6 @@
 package de.marcdoderer.shop_keeper.screen.state;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,7 +17,6 @@ import de.marcdoderer.shop_keeper.entities.items.Item;
 import de.marcdoderer.shop_keeper.entities.items.ItemFactory;
 import de.marcdoderer.shop_keeper.listener.ExitZoneListener;
 import de.marcdoderer.shop_keeper.listener.TradeItemListener;
-import de.marcdoderer.shop_keeper.manager.EntityData;
 import de.marcdoderer.shop_keeper.manager.ItemData;
 import de.marcdoderer.shop_keeper.manager.PlaceData;
 import de.marcdoderer.shop_keeper.manager.PlayerData;
@@ -56,8 +56,6 @@ public class GameState extends State{
 
     public final ExitZoneListener exitZoneListener;
     public final TradeItemListener tradeItemListener;
-
-    private boolean openMenu;
 
     public GameState(final GameScreen screen){
         exitZoneListener = new ExitZoneListener(this);
@@ -122,7 +120,7 @@ public class GameState extends State{
     }
 
     @Override
-    public void resize(float width, float height) {
+    public void resize(int width, int height) {
         ingameHud.resize(width, height);
     }
 
@@ -141,11 +139,10 @@ public class GameState extends State{
     public void keyPressed(int keyCode) {
         if(keyCode == Input.Keys.ENTER)
             debugOn = !debugOn;
-        //TODO correct keyCode
-        else if(keyCode == Input.Keys.TAB){
+        else if(keyCode == MenuManager.MENU_KEY){
             ingameHud.setVisible(false);
             render(screen.batch);
-            this.screen.stateManager.push(new MenuState(screen));
+            this.screen.stateManager.push(MenuManager.getInGameMenuState(this.screen));
         }
     }
 
@@ -157,6 +154,7 @@ public class GameState extends State{
     @Override
     public void resume() {
         this.ingameHud.setVisible(true);
+        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     @Override

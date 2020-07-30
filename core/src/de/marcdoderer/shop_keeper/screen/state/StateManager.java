@@ -21,6 +21,7 @@ public class StateManager {
     public State pop(){
         if(stateStack.size() > 1 ){
             State state = stateStack.pop();
+            state.dispose();
             stateStack.peek().resume();
             return state;
         }
