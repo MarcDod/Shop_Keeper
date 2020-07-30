@@ -1,5 +1,6 @@
 package de.marcdoderer.shop_keeper.screen.state;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,6 +16,8 @@ import de.marcdoderer.shop_keeper.entities.Player;
 import de.marcdoderer.shop_keeper.entities.items.ItemFactory;
 import de.marcdoderer.shop_keeper.listener.ExitZoneListener;
 import de.marcdoderer.shop_keeper.listener.TradeItemListener;
+import de.marcdoderer.shop_keeper.manager.EntityData;
+import de.marcdoderer.shop_keeper.manager.ItemData;
 import de.marcdoderer.shop_keeper.manager.PlaceData;
 import de.marcdoderer.shop_keeper.manager.PlayerData;
 import de.marcdoderer.shop_keeper.movement.PlayerController;
@@ -53,6 +56,7 @@ public class GameState extends State{
 
     public final ExitZoneListener exitZoneListener;
     public final TradeItemListener tradeItemListener;
+
     public GameState(final GameScreen screen){
         exitZoneListener = new ExitZoneListener(this);
         tradeItemListener = new TradeItemListener(this);
@@ -116,7 +120,7 @@ public class GameState extends State{
     }
 
     @Override
-    public void resize(float width, float height) {
+    public void resize(int width, int height) {
         ingameHud.resize(width, height);
     }
 
@@ -135,11 +139,22 @@ public class GameState extends State{
     public void keyPressed(int keyCode) {
         if(keyCode == Input.Keys.ENTER)
             debugOn = !debugOn;
+        else if(keyCode == MenuManager.MENU_KEY){
+            ingameHud.setVisible(false);
+            render(screen.batch);
+            this.screen.stateManager.push(MenuManager.getInGameMenuState(this.screen));
+        }
     }
 
     @Override
     public void mouseClicked(float x, float y) {
         playerController.clickEvent(new Vector2(x, y));
+    }
+
+    @Override
+    public void resume() {
+        this.ingameHud.setVisible(true);
+        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     @Override

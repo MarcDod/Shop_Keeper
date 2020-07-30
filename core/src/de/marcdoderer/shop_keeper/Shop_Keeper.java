@@ -11,6 +11,7 @@ import de.marcdoderer.shop_keeper.screen.StartScreen;
 public class Shop_Keeper extends Game {
 
 	public AssetManager assetManager;
+	public static boolean vSync;
 
 	public Shop_Keeper(){
 	}

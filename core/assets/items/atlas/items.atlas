@@ -1,26 +1,33 @@
 
 items.png
-size: 1024,512
+size: 2048,512
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-Pickaxe
+Pickax2
   rotate: false
   xy: 1, 1
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
-apple
+Pickaxe
   rotate: false
   xy: 259, 1
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
-gold
+apple
   rotate: false
   xy: 517, 1
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+gold
+  rotate: false
+  xy: 775, 1
   size: 256, 256
   orig: 256, 256
   offset: 0, 0

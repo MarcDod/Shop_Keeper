@@ -3,8 +3,6 @@ package de.marcdoderer.shop_keeper.screen.hud;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import de.marcdoderer.shop_keeper.shop.time.DayNightCircle;
-import de.marcdoderer.shop_keeper.util.FrameRate;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -51,6 +49,12 @@ public class IngameHud {
     public void dispose(){
         for(HudElement hudElement : hudElements){
             hudElement.dispose();
+        }
+    }
+
+    public void setVisible(final boolean visible){
+        for(HudElement hudElement : hudElements){
+            hudElement.setVisible(visible);
         }
     }
 }

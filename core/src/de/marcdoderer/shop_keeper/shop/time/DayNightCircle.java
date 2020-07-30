@@ -16,6 +16,7 @@ public class DayNightCircle implements HudElement {
     private final float speedUp;
     private int minutes;
     private int hours;
+    private boolean visible;
 
 
     private final BitmapFont font;
@@ -29,6 +30,7 @@ public class DayNightCircle implements HudElement {
         minutes %= 60;
         hours %= 24;
         this.font = new BitmapFont();
+        this.visible = true;
     }
 
     public float getSeconds(){
@@ -76,11 +78,17 @@ public class DayNightCircle implements HudElement {
 
     @Override
     public void render(SpriteBatch batch){
+        if(!visible) return;
         font.draw(batch, timeToString(hours) + " : " + timeToString(minutes), Gdx.graphics.getWidth() - 100, Gdx.graphics.getHeight() - 30);
     }
 
     public void dispose(){
         this.font.dispose();
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
     public void reset(){
