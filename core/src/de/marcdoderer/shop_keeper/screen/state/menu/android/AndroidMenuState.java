@@ -39,26 +39,14 @@ public class AndroidMenuState extends MenuState {
     }
 
     @Override
-    public void keyPressed(int keyCode) {
-        if(keyCode == MENU_KEY){
-            this.screen.stateManager.pop();
-        }
-    }
-
-    @Override
     public void mouseClicked(float x, float y) {
 
     }
 
-    @Override
-    public void resume() {
-        originInputProcessor = Gdx.input.getInputProcessor();
-        Gdx.input.setInputProcessor(getInputProcessor());
-    }
 
     @Override
     public OrthographicCamera getCamera() {
-        return null;
+        return this.camera;
     }
 
 }

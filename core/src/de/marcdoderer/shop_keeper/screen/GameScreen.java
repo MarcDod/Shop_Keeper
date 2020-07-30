@@ -96,6 +96,12 @@ public class GameScreen extends ScreenAdapter {
         gameManager.saveData();
     }
 
+    public void saveOptions(){
+        gameManager.gameData.setVsync(Shop_Keeper.vSync);
+
+        gameManager.saveData();
+    }
+
     @Override
     public void render (float delta) {
 

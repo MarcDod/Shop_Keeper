@@ -17,8 +17,7 @@ public class AndroidMenuPage extends MenuPage {
     private final TextButton resumeButton;
 
     public AndroidMenuPage(float x, float y, float width, float height, MenuState parent) {
-        super(x, y, width, height);
-        this.parent = parent;
+        super(x, y, width, height, parent);
         Skin skin = new Skin(Gdx.files.internal("menu/button/uiskin.json"));
         this.resumeButton = new TextButton("Resume", skin);
         resumeButton.addListener(new ClickListener(){

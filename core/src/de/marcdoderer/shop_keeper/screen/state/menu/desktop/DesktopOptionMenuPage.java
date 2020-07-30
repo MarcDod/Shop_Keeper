@@ -20,8 +20,7 @@ public class DesktopOptionMenuPage extends MenuPage {
     public final TextButton back;
 
     public DesktopOptionMenuPage(final float x, final float y, final float width, final float height, final MenuState parent){
-        super(x, y, width, height);
-        this.parent = parent;
+        super(x, y, width, height, parent);
         Skin skin = new Skin(Gdx.files.internal("menu/button/uiskin.json"));
         this.fullScreenButton = new TextButton(getFullScreenText(), skin);
         this.VSyncButton = new TextButton(getVsyncText(), skin);
@@ -64,9 +63,9 @@ public class DesktopOptionMenuPage extends MenuPage {
          }else {
             Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
         }
-        this.fullScreenButton.setText(getFullScreenText());
         Gdx.graphics.setVSync(Shop_Keeper.vSync);
         parent.resize(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight());
+        this.fullScreenButton.setText(getFullScreenText());
         Gdx.input.setInputProcessor(parent.getInputProcessor());
     }
 
@@ -82,6 +81,7 @@ public class DesktopOptionMenuPage extends MenuPage {
         Shop_Keeper.vSync = !Shop_Keeper.vSync;
         Gdx.graphics.setVSync(Shop_Keeper.vSync);
         this.VSyncButton.setText(getVsyncText());
+        parent.screen.saveOptions();
     }
 
     private void backButton(){

@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import de.marcdoderer.shop_keeper.screen.GameScreen;
 import de.marcdoderer.shop_keeper.screen.state.GameState;
+import de.marcdoderer.shop_keeper.screen.state.MenuManager;
 import de.marcdoderer.shop_keeper.screen.state.State;
 
 import java.awt.*;
@@ -130,4 +131,18 @@ public abstract class MenuState extends State {
     public void resize(int width, int height) {
         this.stage.getViewport().update(width, height);
     }
+
+    @Override
+    public void resume() {
+        originInputProcessor = Gdx.input.getInputProcessor();
+        Gdx.input.setInputProcessor(getInputProcessor());
+    }
+
+    @Override
+    public void keyPressed(int keyCode) {
+        if(keyCode == MenuManager.MENU_KEY){
+            this.screen.stateManager.pop();
+        }
+    }
+
 }

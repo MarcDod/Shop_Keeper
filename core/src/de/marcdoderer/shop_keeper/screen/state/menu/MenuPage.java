@@ -10,8 +10,9 @@ public abstract class MenuPage {
     protected MenuState parent;
     protected Group group;
 
-    public MenuPage(final float x, final float y, final float width, final float height){
+    public MenuPage(final float x, final float y, final float width, final float height, final MenuState parent){
         this.group = new Group();
+        this.parent = parent;
         final float scale = (float)Gdx.graphics.getWidth() / GameState.WIDTH;
         group.setBounds(x *  scale, y * scale, width * scale, height * scale);
     }

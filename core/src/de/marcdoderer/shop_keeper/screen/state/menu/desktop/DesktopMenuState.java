@@ -39,33 +39,6 @@ public class DesktopMenuState extends MenuState {
         stage.getCamera().update();
     }
 
-
-    @Override
-    public void render(SpriteBatch batch) {
-        batch.setProjectionMatrix(camera.combined);
-        batch.setShader(grayShader);
-        batch.begin();
-        batch.getColor();
-
-        grayShader.setUniformf("u_percent", GRAY_VALUE);
-        batch.draw(background, 0, 0, GameState.WIDTH, GameState.HEIGHT);
-
-        batch.end();
-        batch.setShader(SpriteBatch.createDefaultShader());
-
-        batch.begin();
-        Color c = batch.getColor();
-        batch.setColor(c.r, c.g, c.b, .3f);
-        batch.draw(menuForeground, MENU_X, MENU_Y, WIDTH, HEIGHT);
-        batch.setColor(c.r, c.g, c.b, 1f);
-
-        batch.end();
-
-        this.stage.draw();
-
-    }
-
-
     @Override
     public void renderShapes(ShapeRenderer shapeRenderer) {
 
@@ -77,23 +50,7 @@ public class DesktopMenuState extends MenuState {
     }
 
     @Override
-    public void keyPressed(int keyCode) {
-        if(keyCode == MenuManager.MENU_KEY){
-            this.screen.stateManager.pop();
-        }
-    }
-
-    @Override
     public void mouseClicked(float x, float y) {
 
-    }
-
-    @Override
-    public void resume() {
-        InputMultiplexer inputMultiplexer = new InputMultiplexer();
-        originInputProcessor = Gdx.input.getInputProcessor();
-        inputMultiplexer.addProcessor(stage);
-        inputMultiplexer.addProcessor(originInputProcessor);
-        Gdx.input.setInputProcessor(inputMultiplexer);
     }
 }

@@ -16,14 +16,17 @@ public class DesktopMenuPage extends MenuPage {
 
     private final TextButton optionButton;
     private final TextButton resumeButton;
+    private final TextButton exitButton;
 
     public DesktopMenuPage(final float x, final float y, final float width, final float height, final MenuState parent){
-        super(x, y, width, height);
+        super(x, y, width, height, parent);
 
-        this.parent = parent;
         Skin skin = new Skin(Gdx.files.internal("menu/button/uiskin.json"));
+
         this.optionButton = new TextButton("Options", skin);
         this.resumeButton = new TextButton("Resume", skin);
+        this.exitButton = new TextButton("Quit", skin);
+
         optionButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -36,13 +39,23 @@ public class DesktopMenuPage extends MenuPage {
                 resumeAction();
             }
         });
-        float size = (width * (float)Gdx.graphics.getWidth() / GameState.WIDTH) / 2;
+        exitButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                exitAction();
+            }
+        });
+
+        float size = (width * (float)Gdx.graphics.getWidth() / GameState.WIDTH) / 3;
         optionButton.setSize(size, size);
         resumeButton.setSize(size, size);
+        exitButton.setSize(size, size);
         resumeButton.setPosition(size, 0);
+        exitButton.setPosition(2 * size, 0);
 
         group.addActor(optionButton);
         group.addActor(resumeButton);
+        group.addActor(exitButton);
     }
 
     private void optionAction(){
@@ -51,6 +64,10 @@ public class DesktopMenuPage extends MenuPage {
 
     private void resumeAction(){
         parent.screen.stateManager.pop();
+    }
+
+    private void exitAction(){
+        Gdx.app.exit();
     }
 
     @Override
