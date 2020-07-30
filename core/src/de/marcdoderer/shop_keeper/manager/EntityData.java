@@ -67,4 +67,5 @@ public class EntityData {
     public String getName(){
         return this.name;
     }
+
 }

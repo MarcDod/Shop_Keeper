@@ -49,6 +49,10 @@ public class ItemCarryingEntity extends Entity implements ItemCarry {
             carriedItem.render(batch);
     }
 
+    protected void renderWithoutItem(final SpriteBatch batch){
+        super.render(batch);
+    }
+
     @Override
     public EntityData getEntityData() {
         EntityData data = super.getEntityData();

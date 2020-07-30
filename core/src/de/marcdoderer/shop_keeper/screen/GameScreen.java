@@ -105,11 +105,12 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render (float delta) {
 
+        //int renderCalls = batch.totalRenderCalls;
         update(delta);
         render();
 
         console.draw();
-        //System.out.println(batch.renderCalls);
+        //System.out.println(batch.totalRenderCalls - renderCalls);
 
     }
 
@@ -117,6 +118,8 @@ public class GameScreen extends ScreenAdapter {
     public void dispose () {
         batch.dispose();
         shapeRenderer.dispose();
+        stateManager.peek().dispose();
+        console.dispose();
     }
 
     @Override

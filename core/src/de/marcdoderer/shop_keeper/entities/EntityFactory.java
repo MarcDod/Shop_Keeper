@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import de.marcdoderer.shop_keeper.animation.IdleAnimation;
 import de.marcdoderer.shop_keeper.animation.MoveAnimation;
+import de.marcdoderer.shop_keeper.entities.specialEntity.Chest;
 import de.marcdoderer.shop_keeper.screen.GameScreen;
 import de.marcdoderer.shop_keeper.screen.state.GameState;
 import de.marcdoderer.shop_keeper.util.Util;
@@ -30,12 +31,23 @@ public class EntityFactory {
 
     private Entity createEntity(final EntityType type, final String name, Vector2 position, float width, final float height, World world){
         TextureAtlas atlas = gameState.screen.assetManager.get(atlasUrl);
-        TextureRegion region = atlas.findRegion(name);
+        //TODO: make entity creation dynamic this is just for test purpose
+        TextureRegion region;
+        if(!name.equals("chest")){
+            region = atlas.findRegion(name);
+        }else{
+            region = atlas.findRegion("table");
+        }
         Sprite sprite = new Sprite(region);
         sprite.setSize(width, height);
         sprite.setOriginCenter();
 
         Body body = Util.createBody(width, height, position.x, position.y, world);
+
+        //TODO: make dynamic this is just for test purpose;
+        if(name.equals("chest")){
+            return new Chest(sprite, body, name);
+        }
 
         if(type == EntityType.ENTITY)
             return new Entity(sprite, body, name);

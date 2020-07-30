@@ -31,7 +31,7 @@ public class GameManager {
 
             PlaceData[] placeData = new PlaceData[3];
             placeData[Shop.SHOP_ID] = new PlaceData();
-            EntityData[] entityData = new EntityData[1];
+            EntityData[] entityData = new EntityData[2];
             EntityData ed = new EntityData();
             ed.setType(EntityFactory.EntityType.ITEM_CARRYING);
             ed.setName("table");
@@ -40,6 +40,17 @@ public class GameManager {
             ed.setWidth(11.3f);
             ed.setHeight(4f);
             entityData[0] = ed;
+            //TODO: make it beter ;D
+
+            EntityData ed1 = new EntityData();
+            ed1.setType(EntityFactory.EntityType.ITEM_CARRYING);
+            ed1.setName("chest");
+            ed1.setPosY(19.6f);
+            ed1.setPosX(28.3f);
+            ed1.setWidth(3f);
+            ed1.setHeight(3f);
+            entityData[1] = ed1;
+
             placeData[Shop.SHOP_ID].setEntity(entityData);
             placeData[Basement.BASEMENT_ID] = new PlaceData();
             placeData[Basement.BASEMENT2_ID] = new PlaceData();
