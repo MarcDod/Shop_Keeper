@@ -2,13 +2,9 @@ package de.marcdoderer.shop_keeper.manager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.utils.Base64Coder;
 import com.badlogic.gdx.utils.Json;
-import de.marcdoderer.shop_keeper.entities.Entity;
 import de.marcdoderer.shop_keeper.entities.EntityFactory;
-import de.marcdoderer.shop_keeper.entities.items.ItemFactory;
 import de.marcdoderer.shop_keeper.shop.Basement;
-import de.marcdoderer.shop_keeper.shop.Place;
 import de.marcdoderer.shop_keeper.shop.Shop;
 import de.marcdoderer.shop_keeper.shop.loader.ShopLoader;
 
@@ -18,16 +14,15 @@ public class GameManager {
     public GameData gameData;
     private final Json json = new Json();
 
-    public GameManager(){
+    public GameManager() {
         Preferences pref = Gdx.app.getPreferences("de.marcdoderer.shop_keeper.preferences");
-        if(!pref.contains("GameData")){
+        if (!pref.contains("GameData")) {
             gameData = new GameData();
 
             gameData.setPlayerData(new PlayerData());
             gameData.getPlayerData().setPlayerPlaceID(Shop.SHOP_ID);
             gameData.getPlayerData().setPlayerZoneID(ShopLoader.START);
-            gameData.getPlayerData().setItemData(new ItemData());
-            gameData.getPlayerData().getCarriedItem().setType(ItemFactory.ItemType.GOLD);
+            gameData.getPlayerData().setCarriedItemID("shopKeeper:gold");
 
             PlaceData[] placeData = new PlaceData[3];
             placeData[Shop.SHOP_ID] = new PlaceData();
@@ -50,22 +45,22 @@ public class GameManager {
             gameData.setVsync(true);
 
             saveData();
-        }else {
+        } else {
             loadData();
         }
     }
 
-    public void saveData(){
-        if(gameData != null){
+    public void saveData() {
+        if (gameData != null) {
             Preferences pref = Gdx.app.getPreferences("de.marcdoderer.shop_keeper.preferences");
-            pref.putString("GameData", json.prettyPrint(gameData));
+            pref.putString("GameData", /*Base64Coder.encodeString(*/json.prettyPrint(gameData));//);
             pref.flush();
         }
     }
 
-    public void loadData(){
+    public void loadData() {
         Preferences pref = Gdx.app.getPreferences("de.marcdoderer.shop_keeper.preferences");
         String gameDataJsonString = pref.getString("GameData");
-        gameData = json.fromJson(GameData.class, gameDataJsonString);
+        gameData = json.fromJson(GameData.class, /*Base64Coder.decodeString(*/gameDataJsonString);//);
     }
 }

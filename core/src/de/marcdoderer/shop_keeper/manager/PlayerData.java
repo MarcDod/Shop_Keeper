@@ -1,12 +1,10 @@
 package de.marcdoderer.shop_keeper.manager;
 
-import de.marcdoderer.shop_keeper.entities.items.ItemFactory;
-
 public class PlayerData {
 
     private int playerZoneID;
     private int playerPlaceID;
-    private ItemData carriedItem;
+    private String carriedItemID;
 
     public void setPlayerZoneID(final int playerTileID){
         this.playerZoneID = playerTileID;
@@ -16,19 +14,19 @@ public class PlayerData {
         this.playerPlaceID = playerPlaceID;
     }
 
-    public int getPlayerZoneID(){
+    public int getPlayerZoneID() {
         return this.playerZoneID;
     }
 
-    public int getPlayerPlaceID(){
+    public int getPlayerPlaceID() {
         return this.playerPlaceID;
     }
 
-    public ItemData getCarriedItem(){
-        return this.carriedItem;
+    public String getCarriedItemID() {
+        return this.carriedItemID;
     }
 
-    public void setItemData(ItemData data){
-        this.carriedItem = data;
+    public void setCarriedItemID(String id) {
+        this.carriedItemID = id;
     }
 }
