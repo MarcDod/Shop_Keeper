@@ -29,7 +29,7 @@ public abstract class PlaceLoader {
 
     public WeightedGraph<Zone, Integer> graph;
     public HashMap<String, Entity> entityList;
-    public Set<Entity> itemLayerList;
+    public HashMap<String, Entity> itemLayerList;
     public Set<Sprite> topLayerTexture;
     public Set<Blocker> blockerList;
 
@@ -48,13 +48,13 @@ public abstract class PlaceLoader {
     }
 
     public final Collection<Entity> getItemLayerList(){
-        return this.itemLayerList;
+        return this.itemLayerList.values();
     }
 
 
     protected PlaceLoader(int gridSizeX, int gridSizeY, float startX, float startY, Vector2 position, int placeID, GameState gameState, EntityData[] entityData){
         this.entityList = new HashMap<String, Entity>();
-        this.itemLayerList = new HashSet<Entity>();
+        this.itemLayerList = new HashMap<String, Entity>();
         this.topLayerTexture = new HashSet<Sprite>();
         this.blockerList = new HashSet<Blocker>();
         this.gridSizeX = gridSizeX;
@@ -70,9 +70,9 @@ public abstract class PlaceLoader {
             Entity e = factory.createEntity(data.getType(), new Vector2(data.getPosX(), data.getPosY()), data.getWidth(), data.getHeight(), data.getName(), gameState.world);
             if(data.getCarriedItem() != null){
                 ((ItemCarryingEntity) e).carryItem(itemFactory.createItem(data.getCarriedItem(), new Vector2(0, 0), gameState.world));
-                itemLayerList.add(((ItemCarryingEntity) e).getCarriedItem());
+                itemLayerList.put(data.getCarriedItem().getName(), ((ItemCarryingEntity) e).getCarriedItem());
             }
-            //TODO: make entity name unique
+
             entityList.put(data.getName(), e);
         }
     }
