@@ -27,6 +27,10 @@ public class ZoneBasedMoveCommand extends MoveCommand {
         this.destinations = movePoints;
     }
 
+    public Zone getDestinationZone(){
+        return this.destinationsZones.get(this.destinationsZones.size() - 1);
+    }
+
     @Override
     protected void reachedADestination(){
         Character character = (Character) entity;

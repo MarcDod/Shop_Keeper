@@ -3,6 +3,10 @@ package de.marcdoderer.shop_keeper.util;
 import com.strongjoshua.console.CommandExecutor;
 import com.strongjoshua.console.Console;
 import com.strongjoshua.console.LogLevel;
+import de.marcdoderer.shop_keeper.entities.EntityManager;
+import de.marcdoderer.shop_keeper.entities.MovableEntity;
+import de.marcdoderer.shop_keeper.entities.items.Item;
+import de.marcdoderer.shop_keeper.entities.items.ItemFactory;
 import de.marcdoderer.shop_keeper.screen.GameScreen;
 import de.marcdoderer.shop_keeper.screen.state.GameState;
 
@@ -52,5 +56,24 @@ public class GameCommandExecutor extends CommandExecutor {
             return;
         }
         console.log("time could not be changed", LogLevel.ERROR);
+    }
+
+    public final void getItem(final String itemID){
+        removeItem();
+        this.gameState.player.carryItem(ItemFactory.getItemRegistry().createItemByID(itemID));
+        this.gameState.getCurrentPlace().addEntity(EntityManager.Layer.ITEM_LAYER, this.gameState.player.getCarriedItem());
+
+        console.log("Successful created " + itemID, LogLevel.SUCCESS);
+    }
+
+    public final void removeItem(){
+        final Item oldItem = this.gameState.player.getCarriedItem();
+        if(oldItem != null){
+            this.gameState.player.removeCarriedItem();
+            oldItem.dispose();
+            this.gameState.getCurrentPlace().removeEntity(EntityManager.Layer.ITEM_LAYER, oldItem);
+            console.log("Successful remove " + oldItem.id, LogLevel.SUCCESS);
+
+        }
     }
 }

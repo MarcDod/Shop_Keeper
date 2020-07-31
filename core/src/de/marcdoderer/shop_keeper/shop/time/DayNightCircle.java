@@ -91,10 +91,6 @@ public class DayNightCircle implements HudElement {
         this.visible = visible;
     }
 
-    public void reset(){
-        this.seconds = 0;
-    }
-
     private String timeToString(int time){
         String timeString = String.valueOf(time);
         if(timeString.length() > 1)

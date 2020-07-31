@@ -10,7 +10,7 @@ import de.marcdoderer.shop_keeper.screen.state.menu.desktop.DesktopMenuState;
 
 public class MenuManager {
 
-    public static final int MENU_KEY = Input.Keys.ESCAPE;
+    public static final int MENU_KEY = (Gdx.app.getType() == Application.ApplicationType.Android)? Input.Keys.Q : Input.Keys.ESCAPE;
 
     private MenuManager(){
 

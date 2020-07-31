@@ -14,6 +14,8 @@ import de.marcdoderer.shop_keeper.entities.EntityManager;
 import de.marcdoderer.shop_keeper.entities.MovableEntity;
 import de.marcdoderer.shop_keeper.entities.Player;
 import de.marcdoderer.shop_keeper.entities.items.ItemFactory;
+import de.marcdoderer.shop_keeper.entities.specialEntity.Chest;
+import de.marcdoderer.shop_keeper.listener.ChestListener;
 import de.marcdoderer.shop_keeper.listener.ExitZoneListener;
 import de.marcdoderer.shop_keeper.listener.TradeItemListener;
 import de.marcdoderer.shop_keeper.manager.EntityData;
@@ -21,8 +23,10 @@ import de.marcdoderer.shop_keeper.manager.ItemData;
 import de.marcdoderer.shop_keeper.manager.PlaceData;
 import de.marcdoderer.shop_keeper.manager.PlayerData;
 import de.marcdoderer.shop_keeper.movement.PlayerController;
+import de.marcdoderer.shop_keeper.movement.Zone;
 import de.marcdoderer.shop_keeper.screen.GameScreen;
 import de.marcdoderer.shop_keeper.screen.hud.IngameHud;
+import de.marcdoderer.shop_keeper.screen.hud.InventarHud;
 import de.marcdoderer.shop_keeper.shop.Basement;
 import de.marcdoderer.shop_keeper.shop.Basement2;
 import de.marcdoderer.shop_keeper.shop.Place;
@@ -56,19 +60,23 @@ public class GameState extends State{
 
     public final ExitZoneListener exitZoneListener;
     public final TradeItemListener tradeItemListener;
+    public final ChestListener chestListener;
+
+    private InventarHud inventarHud;
 
     public GameState(final GameScreen screen){
         exitZoneListener = new ExitZoneListener(this);
         tradeItemListener = new TradeItemListener(this);
+        chestListener = new ChestListener(this);
         this.gameCamera = new OrthographicCamera(WIDTH, HEIGHT);
         this.ingameHud = new IngameHud();
         this.world = new World(new Vector2(0,0), false);
         this.debugRenderer = new Box2DDebugRenderer();
+        this.screen = screen;
         this.dayNightCircle = new DayNightCircle(screen.gameManager.gameData.getTimeInSeconds());
         this.ingameHud.addHudElement(dayNightCircle);
         this.ingameHud.addHudElement(new FrameRate());
         this.debugOn = false;
-        this.screen = screen;
         this.currentPlace = screen.gameManager.gameData.getPlayerData().getPlayerPlaceID();
 
         this.places = initPlaces();
@@ -99,12 +107,33 @@ public class GameState extends State{
     @Override
     public void renderShapes(ShapeRenderer shapeRenderer) {
         shapeRenderer.setProjectionMatrix(gameCamera.combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        if(inventarHud != null){
+            inventarHud.drawGrid(shapeRenderer);
+        }
 
         if(debugOn){
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             places[currentPlace].drawShape(shapeRenderer);
-            shapeRenderer.end();
         }
+        shapeRenderer.end();
+    }
+
+    public void openInventar(final Chest chest){
+        if(inventarHud != null) return;
+        inventarHud = new InventarHud(this, chest, gameCamera);
+        this.ingameHud.addHudElement(inventarHud);
+        this.playerController.setActive(false);
+    }
+    public void closeInventar(){
+        this.ingameHud.removeHudElement(inventarHud);
+        this.playerController.setActive(true);
+        this.inventarHud.dispose();
+        this.inventarHud = null;
+
+    }
+
+    public Zone getPlayerZone(){
+        return getCurrentPlace().getGraph().getNodeMetaData(player.getCurrentZoneID());
     }
 
     @Override
@@ -148,7 +177,27 @@ public class GameState extends State{
 
     @Override
     public void mouseClicked(float x, float y) {
+        boolean closed = inventarHud == null;
         playerController.clickEvent(new Vector2(x, y));
+        if(inventarHud != null){
+            if(closed)
+                inventarHud.opendWithThisClick();
+            inventarHud.clickEvent(x, y);
+        }
+    }
+
+    @Override
+    public void mouseDragged(float x, float y) {
+        if(inventarHud != null){
+            inventarHud.mouseDragged(x, y);
+        }
+    }
+
+    @Override
+    public void mouseReleased(float x, float y) {
+        if(inventarHud != null){
+            inventarHud.mouseReleased(x, y);
+        }
     }
 
     @Override

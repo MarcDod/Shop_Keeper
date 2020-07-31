@@ -65,8 +65,10 @@ public class ShopLoader extends PlaceLoader {
             Zone z = zones.remove(30 + i);
             zones.add(30 + i, z.makeExitZoneCopy(BasementLoader.SHOP_EXIT, Place.BASEMENT_ID, gameState.exitZoneListener));
         }
-        Zone z = zones.remove(38);
-        zones.add(38, z.makeEntityZoneCopy ( entityList.get("table"), gameState.tradeItemListener));
+        Zone tableZone = zones.remove(38);
+        zones.add(38, tableZone.makeEntityZoneCopy ( entityList.get("table"), gameState.tradeItemListener));
+        Zone chestZone = zones.remove(46);
+        zones.add(46, chestZone.makeEntityZoneCopy ( entityList.get("chest"), gameState.chestListener));
 
 
         //sort(zones);

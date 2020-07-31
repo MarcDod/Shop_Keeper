@@ -59,8 +59,7 @@ public class Entity {
     }
 
     public void dispose(){
-        this.sprite.getTexture().dispose();
-        this.body.getFixtureList().first().getShape().dispose();
+        this.body.getWorld().destroyBody(this.body);
     }
 
     public Sprite getSprite(){

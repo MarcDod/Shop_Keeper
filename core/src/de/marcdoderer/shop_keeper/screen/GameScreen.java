@@ -58,6 +58,12 @@ public class GameScreen extends ScreenAdapter {
                 return true;
             }
 
+            @Override
+            public boolean touchDragged(int screenX, int screenY, int pointer) {
+                mouseDragged(screenX, screenY);
+                return true;
+            }
+
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
                 if (button == Input.Buttons.LEFT) {
                     mouseClicked(screenX, screenY);
@@ -65,20 +71,33 @@ public class GameScreen extends ScreenAdapter {
                 }
                 return false;
             }
-         });
+
+            @Override
+            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+                if (button == Input.Buttons.LEFT) {
+                    mouseReleased(screenX, screenY);
+                    return true;
+                }
+                return false;
+            }
+        });
 
         this.console.resetInputProcessing();
     }
 
+    private void mouseReleased(final int screenX, final int screenY){
+        final Vector2 mouseClick = viewport.unproject(new Vector2(screenX, screenY));
+        this.stateManager.peek().mouseReleased(mouseClick.x, mouseClick.y);
+    }
+
+    private void mouseDragged(final int screenX, final int screenY){
+        final Vector2 mouseClick = viewport.unproject(new Vector2(screenX, screenY));
+        this.stateManager.peek().mouseDragged(mouseClick.x, mouseClick.y);
+    }
 
     private void mouseClicked(final int screenX, final int screenY){
         final Vector2 mouseClick = viewport.unproject(new Vector2(screenX, screenY));
         this.stateManager.peek().mouseClicked(mouseClick.x, mouseClick.y);
-
-        //TEST
-        if(mouseClick.x < 1 && mouseClick.y < 1){
-            save();
-        }
     }
 
     private void keyClicked(final int keyCode){
@@ -105,11 +124,12 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render (float delta) {
 
+        //int renderCalls = batch.totalRenderCalls;
         update(delta);
         render();
 
         console.draw();
-        //System.out.println(batch.renderCalls);
+        //System.out.println(batch.totalRenderCalls - renderCalls);
 
     }
 
@@ -117,6 +137,8 @@ public class GameScreen extends ScreenAdapter {
     public void dispose () {
         batch.dispose();
         shapeRenderer.dispose();
+        stateManager.peek().dispose();
+        console.dispose();
     }
 
     @Override

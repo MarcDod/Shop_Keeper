@@ -11,7 +11,7 @@ import de.marcdoderer.shop_keeper.manager.EntityData;
 
 public class ItemCarryingEntity extends Entity implements ItemCarry {
 
-    private Item carriedItem;
+    protected Item carriedItem;
 
     /**
      * Requires body.getUserData() instance Of BodyDef
@@ -47,6 +47,10 @@ public class ItemCarryingEntity extends Entity implements ItemCarry {
         super.render(batch);
         if(carriedItem != null)
             carriedItem.render(batch);
+    }
+
+    protected void renderWithoutItem(final SpriteBatch batch){
+        super.render(batch);
     }
 
     @Override

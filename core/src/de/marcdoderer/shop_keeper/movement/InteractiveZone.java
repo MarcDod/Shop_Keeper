@@ -15,7 +15,7 @@ public class InteractiveZone extends Zone{
     }
 
     @Override
-    public void startEvent() {
-        zoneListener.perform(this);
+    public void startEvent(final int eventID) {
+        zoneListener.perform(this, eventID);
     }
 }

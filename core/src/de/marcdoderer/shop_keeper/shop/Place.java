@@ -134,4 +134,8 @@ public abstract class Place {
         return placeData;
     }
 
+    public boolean hasEntity(final Entity e){
+        return manager.hasEntity(e);
+    }
+
 }

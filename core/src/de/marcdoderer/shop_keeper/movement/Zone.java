@@ -85,7 +85,7 @@ public class Zone extends Position {
     /**
      * Does nothing in this class
      */
-    public void startEvent(){ };
+    public void startEvent(final int eventID){ };
 
     /**
      * Creats a copy of this Zone. but it is a ExitZone
