@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import de.marcdoderer.shop_keeper.entities.ItemCarryingEntity;
 import de.marcdoderer.shop_keeper.entities.items.Item;
 import de.marcdoderer.shop_keeper.entities.items.ItemFactory;
+import de.marcdoderer.shop_keeper.manager.EntityData;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -47,5 +48,12 @@ public class Chest extends ItemCarryingEntity {
     public void removeCarriedItem() {
         this.itemIDs.remove(getCarriedItem().id);
         super.removeCarriedItem();
+    }
+
+    @Override
+    public EntityData getEntityData() {
+        EntityData eData = super.getEntityData();
+
+        return eData;
     }
 }
