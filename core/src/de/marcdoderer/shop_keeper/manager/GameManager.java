@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Json;
 import de.marcdoderer.shop_keeper.entities.EntityFactory;
+import de.marcdoderer.shop_keeper.entities.specialEntity.Chest;
 import de.marcdoderer.shop_keeper.shop.Basement;
 import de.marcdoderer.shop_keeper.shop.Shop;
 import de.marcdoderer.shop_keeper.shop.loader.ShopLoader;
@@ -16,7 +17,7 @@ public class GameManager {
 
     public GameManager() {
         Preferences pref = Gdx.app.getPreferences("de.marcdoderer.shop_keeper.preferences");
-        if (pref.contains("GameData")) {
+        if (!pref.contains("GameData")) {
             gameData = new GameData();
 
             gameData.setPlayerData(new PlayerData());
@@ -36,7 +37,7 @@ public class GameManager {
             ed.setHeight(4f);
             entityData[0] = ed;
 
-            EntityData ed1 = new EntityData();
+            EntityData ed1 = new Chest.ChestData();
             ed1.setType(EntityFactory.EntityType.ITEM_CARRYING);
             ed1.setName("chest");
             ed1.setPosY(19.6f);

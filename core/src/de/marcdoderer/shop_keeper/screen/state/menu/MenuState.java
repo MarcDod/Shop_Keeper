@@ -145,4 +145,13 @@ public abstract class MenuState extends State {
         }
     }
 
+    @Override
+    public void mouseReleased(float x, float y) {
+
+    }
+
+    @Override
+    public void mouseDragged(float x, float y) {
+
+    }
 }

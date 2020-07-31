@@ -107,15 +107,19 @@ public class GameState extends State{
     @Override
     public void renderShapes(ShapeRenderer shapeRenderer) {
         shapeRenderer.setProjectionMatrix(gameCamera.combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        if(inventarHud != null){
+            inventarHud.drawGrid(shapeRenderer);
+        }
 
         if(debugOn){
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             places[currentPlace].drawShape(shapeRenderer);
-            shapeRenderer.end();
         }
+        shapeRenderer.end();
     }
 
     public void openInventar(final Chest chest){
+        if(inventarHud != null) return;
         inventarHud = new InventarHud(this, chest, gameCamera);
         this.ingameHud.addHudElement(inventarHud);
         this.playerController.setActive(false);
@@ -125,6 +129,7 @@ public class GameState extends State{
         this.playerController.setActive(true);
         this.inventarHud.dispose();
         this.inventarHud = null;
+
     }
 
     public Zone getPlayerZone(){
@@ -172,9 +177,26 @@ public class GameState extends State{
 
     @Override
     public void mouseClicked(float x, float y) {
+        boolean closed = inventarHud == null;
         playerController.clickEvent(new Vector2(x, y));
         if(inventarHud != null){
+            if(closed)
+                inventarHud.opendWithThisClick();
             inventarHud.clickEvent(x, y);
+        }
+    }
+
+    @Override
+    public void mouseDragged(float x, float y) {
+        if(inventarHud != null){
+            inventarHud.mouseDragged(x, y);
+        }
+    }
+
+    @Override
+    public void mouseReleased(float x, float y) {
+        if(inventarHud != null){
+            inventarHud.mouseReleased(x, y);
         }
     }
 

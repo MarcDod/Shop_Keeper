@@ -13,6 +13,8 @@ public abstract class State {
     public abstract void dispose();
     public abstract void keyPressed(final int keyCode);
     public abstract void mouseClicked(final float x, final float y);
+    public abstract void mouseDragged(final float x, final float y);
+    public abstract void mouseReleased(final float x, final float y);
     public abstract void resume();
     public abstract OrthographicCamera getCamera();
 }
