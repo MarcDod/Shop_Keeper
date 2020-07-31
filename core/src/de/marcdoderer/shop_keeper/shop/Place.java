@@ -29,6 +29,7 @@ public abstract class Place {
     public static int SHOP_ID = 0;
     public static int BASEMENT_ID = 1;
     public static int BASEMENT2_ID = 2;
+    public static int GARDEN_ID = 3;
 
     protected Sprite background;
     protected Set<Sprite> topLayerTexture;

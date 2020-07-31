@@ -6,6 +6,8 @@ import com.badlogic.gdx.utils.Json;
 import de.marcdoderer.shop_keeper.entities.EntityFactory;
 import de.marcdoderer.shop_keeper.entities.specialEntity.Chest;
 import de.marcdoderer.shop_keeper.shop.Basement;
+import de.marcdoderer.shop_keeper.shop.Basement2;
+import de.marcdoderer.shop_keeper.shop.Garden;
 import de.marcdoderer.shop_keeper.shop.Shop;
 import de.marcdoderer.shop_keeper.shop.loader.ShopLoader;
 
@@ -25,7 +27,7 @@ public class GameManager {
             gameData.getPlayerData().setPlayerZoneID(ShopLoader.START);
             gameData.getPlayerData().setCarriedItemID("shopKeeper:gold");
 
-            PlaceData[] placeData = new PlaceData[3];
+            PlaceData[] placeData = new PlaceData[4];
             placeData[Shop.SHOP_ID] = new PlaceData();
             EntityData[] entityData = new EntityData[2];
             EntityData ed = new EntityData();
@@ -49,10 +51,11 @@ public class GameManager {
 
             placeData[Shop.SHOP_ID].setEntity(entityData);
             placeData[Basement.BASEMENT_ID] = new PlaceData();
-            placeData[Basement.BASEMENT2_ID] = new PlaceData();
+            placeData[Basement2.BASEMENT2_ID] = new PlaceData();
+            placeData[Garden.GARDEN_ID] = new PlaceData();
 
             gameData.setPlaceDatas(placeData);
-
+            gameData.setVsync(true);
             gameData.setTimeInSeconds(0f);
 
             saveData();

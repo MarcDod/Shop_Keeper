@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
+import de.marcdoderer.shop_keeper.astar.IEdge;
 import de.marcdoderer.shop_keeper.astar.WeightedGraph;
 import de.marcdoderer.shop_keeper.entities.Blocker;
 import de.marcdoderer.shop_keeper.entities.Entity;
@@ -18,9 +19,11 @@ import de.marcdoderer.shop_keeper.listener.ExitZoneListener;
 import de.marcdoderer.shop_keeper.manager.EntityData;
 import de.marcdoderer.shop_keeper.movement.ExitZone;
 import de.marcdoderer.shop_keeper.movement.Zone;
+import de.marcdoderer.shop_keeper.movement.collision.Collision;
 import de.marcdoderer.shop_keeper.movement.collision.CollisionMap;
 import de.marcdoderer.shop_keeper.screen.state.GameState;
 import de.marcdoderer.shop_keeper.util.Util;
+import org.w3c.dom.css.Rect;
 
 import java.util.*;
 
@@ -70,7 +73,7 @@ public abstract class PlaceLoader {
         for(EntityData data : entityData) {
             Entity e = factory.createEntity(data, gameState.world);
             if(data.getCarriedItem() != null){
-                ((ItemCarryingEntity) e).carryItem(itemFactory.createItem(data.getCarriedItem(), new Vector2(0, 0), gameState.world));
+                ((ItemCarryingEntity) e).carryItem(itemFactory.createItem(data.getCarriedItem(), position, gameState.world));
                 itemLayerList.add(((ItemCarryingEntity) e).getCarriedItem());
             }
 
@@ -78,20 +81,8 @@ public abstract class PlaceLoader {
         }
     }
 
-    protected Body createBody(float width, float height, float x, float y, World world){
-        return Util.createBody(width, height, position.x + x, position.y + y , world);
-    }
-
     protected Body createNoShadowBody(float width, float height, float x, float y, World world){
         return Util.createNoShadowBody(width, height, position.x + x, position.y + y , world);
-    }
-
-    protected Zone createZone(float x, float y, float width, float height, int zoneID){
-        return new Zone(x / GameState.SCALE, y / GameState.SCALE, width / GameState.SCALE, height / GameState.SCALE, zoneID);
-    }
-
-    protected ExitZone createExitZone(float x, float y, float width, float height, int zoneID, int nextZone, int nextPlace, ExitZoneListener listener){
-        return new ExitZone(x / GameState.SCALE, y / GameState.SCALE, width / GameState.SCALE, height / GameState.SCALE, zoneID, nextZone, nextPlace, listener);
     }
 
     protected abstract List<Zone> loadZones(GameState gameState);
@@ -108,7 +99,7 @@ public abstract class PlaceLoader {
         }
     }
 
-    protected CollisionMap createCollisionMap(){
+    protected CollisionMap createCollisionMap(Rectangle gridRectangle){
         Set<Rectangle> collisionRectangles = new HashSet<Rectangle>();
         for(Entity entity : entityList.values()){
             final float x = entity.getPosition().x - entity.getWidth() / 2;
@@ -121,7 +112,10 @@ public abstract class PlaceLoader {
             final float y = blocker.getPosition().y - blocker.getHeight() / 2;
             collisionRectangles.add(new Rectangle(x, y, blocker.getWidth(), blocker.getHeight()));
         }
-        return new CollisionMap(collisionRectangles, 5, 10);
+        Set<Rectangle> boundingBox = new HashSet<Rectangle>();
+        boundingBox.addAll(collisionRectangles);
+        boundingBox.add(gridRectangle);
+        return new CollisionMap(collisionRectangles, gridSizeX, gridSizeY, Util.getBoundingBox(boundingBox));
     }
 
     protected Rectangle createCheckRectangle(final Vector2 source, final Vector2 destination){
@@ -132,7 +126,17 @@ public abstract class PlaceLoader {
     }
 
     public void draw(ShapeRenderer renderer){
+        Iterator<IEdge<Integer>> it = graph.edgeIterator();
+        while(it.hasNext()){
+            IEdge<Integer> edge = it.next();
+            Zone source = graph.getNodeMetaData(edge.getSource());
+            Zone destination = graph.getNodeMetaData(edge.getDestination());
+            renderer.line(source.getCenter(), destination.getCenter());
+        }
+        //final CollisionMap collisionMap = createCollisionMap(new Rectangle(new Rectangle(position.x, position.y, GameState.WIDTH, GameState.HEIGHT)));
+        //Rectangle r = collisionMap.gridRectangle;
 
+        //renderer.rect(r.x, r.y, r.width, r.height);
     }
 
     protected WeightedGraph<Zone, Integer> loadGraph(GameState gameState) throws CollisionMapOutOfBoundsException {
@@ -143,8 +147,7 @@ public abstract class PlaceLoader {
             graph.setNodeMetaData(i, zone);
             i++;
         }
-        final CollisionMap collisionMap = createCollisionMap();
-        collisionMap.gridRectangle = new Rectangle(zones.get(0).getX(),zones.get(0).getY(), gridSizeX * zoneSize, gridSizeY * zoneSize);
+        final CollisionMap collisionMap = createCollisionMap(new Rectangle(zones.get(0).getPosition().x, zones.get(0).getPosition().y, gridSizeX * zoneSize, gridSizeY  * zoneSize));
 
         for(int col = 0; col < gridSizeY; col++){
             for(int row = 0; row < gridSizeX; row++) {
@@ -152,30 +155,30 @@ public abstract class PlaceLoader {
                 boolean left = false;
                 boolean right = false;
                 //right
-                if(row + 1 < gridSizeX && !collisionMap.collided(createCheckRectangle(source.getCenter(), graph.getNodeMetaData(row + 1 + col * gridSizeX).getCenter()))){
-                    graph.addEdge(source.getZoneID(), row + 1 + col * gridSizeX, 10);
+                if(row + 1 < gridSizeX && !collisionMap.collided(createCheckRectangle(source.getCenter(), graph.getNodeMetaData(getGridID(row + 1, col)).getCenter()))){
+                    graph.addEdge(source.getZoneID(), getGridID(row + 1, col), 10);
                     right = true;
                 }
-                if(row - 1 >= 0 && !collisionMap.collided(createCheckRectangle(source.getCenter(), graph.getNodeMetaData(row - 1 + col * gridSizeX).getCenter()))){
-                    graph.addEdge(source.getZoneID(), row - 1 + col * gridSizeX, 10);
+                if(row - 1 >= 0 && !collisionMap.collided(createCheckRectangle(source.getCenter(), graph.getNodeMetaData(getGridID(row - 1, col)).getCenter()))){
+                    graph.addEdge(source.getZoneID(), getGridID(row - 1, col), 10);
                     left = true;
                 }
-                if(col + 1 < gridSizeY && !collisionMap.collided(createCheckRectangle(source.getCenter(), graph.getNodeMetaData(row + (col + 1) * gridSizeX).getCenter()))){
-                    graph.addEdge(source.getZoneID(), row + (col + 1) * gridSizeX, 10);
-                    if(right && !collisionMap.collided(createCheckRectangle(source.getCenter(), graph.getNodeMetaData(row + 1 + (col + 1) * gridSizeX).getCenter()))){
-                        graph.addEdge(source.getZoneID(), row + 1 + (col + 1) * gridSizeX, 14);
+                if(col + 1 < gridSizeY && !collisionMap.collided(createCheckRectangle(source.getCenter(), graph.getNodeMetaData(getGridID(row, col + 1)).getCenter()))){
+                    graph.addEdge(source.getZoneID(), getGridID(row, col + 1), 10);
+                    if(right && !collisionMap.collided(createCheckRectangle(source.getCenter(), graph.getNodeMetaData(getGridID(row + 1, col + 1)).getCenter()))){
+                        graph.addEdge(source.getZoneID(), getGridID(row + 1, col + 1), 14);
                     }
-                    if(left && !collisionMap.collided(createCheckRectangle(source.getCenter(), graph.getNodeMetaData(row - 1 + (col + 1) * gridSizeX).getCenter()))){
-                        graph.addEdge(source.getZoneID(), row - 1 + (col + 1) * gridSizeX, 14);
+                    if(left && !collisionMap.collided(createCheckRectangle(source.getCenter(), graph.getNodeMetaData(getGridID(row - 1, col + 1)).getCenter()))){
+                        graph.addEdge(source.getZoneID(), getGridID(row - 1, col + 1), 14);
                     }
                 }
-                if(col - 1 >= 0 && !collisionMap.collided(createCheckRectangle(source.getCenter(), graph.getNodeMetaData(row + (col - 1) * gridSizeX).getCenter()))){
-                    graph.addEdge(source.getZoneID(), row + (col - 1) * gridSizeX, 10);
-                    if(right && !collisionMap.collided(createCheckRectangle(source.getCenter(), graph.getNodeMetaData(row + 1 +(col - 1) * gridSizeX).getCenter()))){
-                        graph.addEdge(source.getZoneID(), row + 1 +(col - 1) * gridSizeX, 14);
+                if(col - 1 >= 0 && !collisionMap.collided(createCheckRectangle(source.getCenter(), graph.getNodeMetaData(getGridID(row, col - 1)).getCenter()))){
+                    graph.addEdge(source.getZoneID(), getGridID(row, col - 1), 10);
+                    if(right && !collisionMap.collided(createCheckRectangle(source.getCenter(), graph.getNodeMetaData(getGridID(row + 1, col - 1)).getCenter()))){
+                        graph.addEdge(source.getZoneID(), getGridID(row + 1, col - 1), 14);
                     }
-                    if(left && !collisionMap.collided(createCheckRectangle(source.getCenter(), graph.getNodeMetaData(row - 1 + (col - 1) * gridSizeX).getCenter()))){
-                        graph.addEdge(source.getZoneID(), row - 1 + (col - 1) * gridSizeX, 14);
+                    if(left && !collisionMap.collided(createCheckRectangle(source.getCenter(), graph.getNodeMetaData(getGridID(row - 1, col - 1)).getCenter()))){
+                        graph.addEdge(source.getZoneID(), getGridID(row - 1, col - 1), 14);
                     }
                 }
             }
@@ -184,4 +187,7 @@ public abstract class PlaceLoader {
         return graph;
     }
 
+    protected int getGridID(int row, int col){
+        return row + col * gridSizeX;
+    }
 }

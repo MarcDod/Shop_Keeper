@@ -27,11 +27,11 @@ public class CollisionMap {
      */
     private List<Rectangle>[][] map;
 
-    public CollisionMap(Set<Rectangle> rectangles, int gridResolutionX, int gridResolutionY) throws IllegalArgumentException{
+    public CollisionMap(Set<Rectangle> rectangles, int gridResolutionX, int gridResolutionY, Rectangle boundingBox) throws IllegalArgumentException{
         if(rectangles == null || gridResolutionX < 1 || gridResolutionY < 1){
             throw new IllegalArgumentException();
         }
-        gridRectangle = Util.getBoundingBox(rectangles);
+        this.gridRectangle = boundingBox;
         generateCollisionMap(gridResolutionX, gridResolutionY);
         try {
             fillCollisionMap(rectangles);
