@@ -1,5 +1,7 @@
 package de.marcdoderer.shop_keeper.shop.loader;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import de.marcdoderer.shop_keeper.exceptions.CollisionMapOutOfBoundsException;
 import de.marcdoderer.shop_keeper.manager.EntityData;
@@ -17,6 +19,16 @@ public class GardenLoader extends PlaceLoader{
 
     public GardenLoader(GameState gameState, Vector2 position, EntityData[] entityData) {
         super(14, 8, 0, 0, position, Garden.GARDEN_ID, gameState, entityData);
+        final TextureAtlas atlas = gameState.screen.assetManager.get("shop/entity/atlas/shopEntity.atlas");
+        for(int i = -1; i < 5; i++){
+            for(int x = 0; x < 2; x++) {
+                Sprite tree = new Sprite(atlas.findRegion("tree"));
+                tree.setSize(11.4f, 11.4f);
+                tree.setPosition(84.6f + x * 11.4f * 0.45f, GameState.HEIGHT - 9f - i * 11.4f * 0.6f - x * 3f);
+                topLayerTexture.add(tree);
+            }
+        }
+
 
         try {
             this.graph = loadGraph(gameState);

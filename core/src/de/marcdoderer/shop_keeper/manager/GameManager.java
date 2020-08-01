@@ -53,6 +53,17 @@ public class GameManager {
             placeData[Basement.BASEMENT_ID] = new PlaceData();
             placeData[Basement2.BASEMENT2_ID] = new PlaceData();
             placeData[Garden.GARDEN_ID] = new PlaceData();
+            EntityData[] entityData1 = new EntityData[1];
+
+            EntityData tree = new EntityData();
+            tree.setName("tree");
+            tree.setPosY(15f);
+            tree.setPosX(70.6f);
+            tree.setWidth(11.4f);
+            tree.setHeight(11.4f);
+            tree.setType(EntityFactory.EntityType.ITEM_CARRYING);
+            entityData1[0] = tree;
+            placeData[Garden.GARDEN_ID].setEntity(entityData1);
 
             gameData.setPlaceDatas(placeData);
             gameData.setVsync(true);

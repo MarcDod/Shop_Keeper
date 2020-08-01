@@ -9,7 +9,7 @@ public class EntityData {
     private float posY;
     private String name;
 
-    private ItemData carriedItem;
+    private String carriedItem;
     private EntityFactory.EntityType type;
 
     public float getWidth() {
@@ -44,7 +44,7 @@ public class EntityData {
         this.posY = posY;
     }
 
-    public ItemData getCarriedItem() {
+    public String getCarriedItem() {
         return carriedItem;
     }
 
@@ -56,8 +56,8 @@ public class EntityData {
         return this.type;
     }
 
-    public void setItemData(ItemData data){
-        this.carriedItem = data;
+    public void setCarriedItem(String carriedItem){
+        this.carriedItem = carriedItem;
     }
 
     public void setName(String name){

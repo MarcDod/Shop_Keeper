@@ -37,8 +37,8 @@ public class Entity {
 
     public EntityData getEntityData(){
         EntityData data = new EntityData();
-        data.setWidth(getWidth());
-        data.setHeight(getHeight());
+        data.setWidth(sprite.getWidth());
+        data.setHeight(sprite.getHeight());
         data.setPosX(getPosition().x);
         data.setPosY(getPosition().y);
         data.setType(type);

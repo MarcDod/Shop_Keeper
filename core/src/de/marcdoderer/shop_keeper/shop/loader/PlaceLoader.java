@@ -1,5 +1,6 @@
 package de.marcdoderer.shop_keeper.shop.loader;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -32,9 +33,9 @@ public abstract class PlaceLoader {
     public final static float zoneSize = 3.33f;
 
     public WeightedGraph<Zone, Integer> graph;
-    public HashMap<String, Entity> entityList;
+    public List<Entity> entityList;
     public Set<Entity> itemLayerList;
-    public Set<Sprite> topLayerTexture;
+    public List<Sprite> topLayerTexture;
     public Set<Blocker> blockerList;
 
     protected final int gridSizeX;
@@ -48,7 +49,7 @@ public abstract class PlaceLoader {
     }
 
     public final Collection<Entity> getEntityList(){
-        return this.entityList.values();
+        return this.entityList;
     }
 
     public final Collection<Entity> getItemLayerList(){
@@ -57,9 +58,9 @@ public abstract class PlaceLoader {
 
 
     protected PlaceLoader(int gridSizeX, int gridSizeY, float startX, float startY, Vector2 position, int placeID, GameState gameState, EntityData[] entityData){
-        this.entityList = new HashMap<String, Entity>();
+        this.entityList = new ArrayList<Entity>();
         this.itemLayerList = new HashSet<Entity>();
-        this.topLayerTexture = new HashSet<Sprite>();
+        this.topLayerTexture = new LinkedList<>();
         this.blockerList = new HashSet<Blocker>();
         this.gridSizeX = gridSizeX;
         this.gridSizeY = gridSizeY;
@@ -73,11 +74,11 @@ public abstract class PlaceLoader {
         for(EntityData data : entityData) {
             Entity e = factory.createEntity(data, gameState.world);
             if(data.getCarriedItem() != null){
-                ((ItemCarryingEntity) e).carryItem(itemFactory.createItem(data.getCarriedItem(), position, gameState.world));
+                ((ItemCarryingEntity) e).carryItem(itemFactory.createItemByID(data.getCarriedItem()));
                 itemLayerList.add(((ItemCarryingEntity) e).getCarriedItem());
             }
 
-            entityList.put(data.getName(), e);
+            entityList.add(e);
         }
     }
 
@@ -101,7 +102,7 @@ public abstract class PlaceLoader {
 
     protected CollisionMap createCollisionMap(Rectangle gridRectangle){
         Set<Rectangle> collisionRectangles = new HashSet<Rectangle>();
-        for(Entity entity : entityList.values()){
+        for(Entity entity : entityList){
             final float x = entity.getPosition().x - entity.getWidth() / 2;
             final float y = entity.getPosition().y - entity.getHeight() / 2;
             collisionRectangles.add(new Rectangle(x, y, entity.getWidth(), entity.getHeight()));
@@ -126,6 +127,7 @@ public abstract class PlaceLoader {
     }
 
     public void draw(ShapeRenderer renderer){
+        renderer.setColor(Color.GOLD);
         Iterator<IEdge<Integer>> it = graph.edgeIterator();
         while(it.hasNext()){
             IEdge<Integer> edge = it.next();
@@ -133,10 +135,7 @@ public abstract class PlaceLoader {
             Zone destination = graph.getNodeMetaData(edge.getDestination());
             renderer.line(source.getCenter(), destination.getCenter());
         }
-        //final CollisionMap collisionMap = createCollisionMap(new Rectangle(new Rectangle(position.x, position.y, GameState.WIDTH, GameState.HEIGHT)));
-        //Rectangle r = collisionMap.gridRectangle;
-
-        //renderer.rect(r.x, r.y, r.width, r.height);
+        renderer.setColor(Color.WHITE);
     }
 
     protected WeightedGraph<Zone, Integer> loadGraph(GameState gameState) throws CollisionMapOutOfBoundsException {

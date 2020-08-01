@@ -74,9 +74,9 @@ public class ShopLoader extends PlaceLoader {
             zones.add(getGridID(i, 3), z.makeExitZoneCopy(BasementLoader.SHOP_EXIT, Place.BASEMENT_ID, gameState.exitZoneListener));
         }
         Zone tableZone = zones.remove(getGridID(8, 3));
-        zones.add(getGridID(8, 3), tableZone.makeEntityZoneCopy ( entityList.get("table"), gameState.tradeItemListener));
+        zones.add(getGridID(8, 3), tableZone.makeEntityZoneCopy ( entityList.get(0), gameState.tradeItemListener));
         Zone chestZone = zones.remove(getGridID(6, 4));
-        zones.add(getGridID(6, 4), chestZone.makeEntityZoneCopy ( entityList.get("chest"), gameState.chestListener));
+        zones.add(getGridID(6, 4), chestZone.makeEntityZoneCopy ( entityList.get(1), gameState.chestListener));
         Zone gardenZone = zones.remove(getGridID(12, 1));
         zones.add(getGridID(12, 1), gardenZone.makeExitZoneCopy(GardenLoader.SHOP_EXIT, Place.GARDEN_ID, gameState.exitZoneListener));
 

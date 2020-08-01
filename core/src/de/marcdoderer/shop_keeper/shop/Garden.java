@@ -28,6 +28,11 @@ public class Garden extends Place{
 
     @Override
     public void render(SpriteBatch batch) {
+        if(dayNightCircle.isNight()){
+            batch.draw(night, position.x, position.y, GameState.WIDTH, GameState.HEIGHT);
+        }else{
+            batch.draw(day, position.x, position.y, GameState.WIDTH, GameState.HEIGHT);
+        }
         super.render(batch);
     }
 
@@ -43,6 +48,5 @@ public class Garden extends Place{
         TextureAtlas atlas = gameState.screen.assetManager.get("shop/background/atlas/shop.atlas");
         this.day = atlas.findRegion("day");
         this.night = atlas.findRegion("night");
-        this.background = new Sprite(day);
     }
 }

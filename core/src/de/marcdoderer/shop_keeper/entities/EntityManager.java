@@ -15,12 +15,12 @@ public class EntityManager {
 
     private final List<Entity> entityLayerList;
     private final List<Entity> itemLayerList;
-    private final Set<Entity> topLayerList;
+    private final List<Entity> topLayerList;
 
     public EntityManager(){
         this.entityLayerList = new LinkedList<>();
         this.itemLayerList = new LinkedList<>();
-        this.topLayerList = new HashSet<>();
+        this.topLayerList = new LinkedList<>();
     }
 
 
