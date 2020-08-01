@@ -27,10 +27,7 @@ import de.marcdoderer.shop_keeper.movement.Zone;
 import de.marcdoderer.shop_keeper.screen.GameScreen;
 import de.marcdoderer.shop_keeper.screen.hud.IngameHud;
 import de.marcdoderer.shop_keeper.screen.hud.InventarHud;
-import de.marcdoderer.shop_keeper.shop.Basement;
-import de.marcdoderer.shop_keeper.shop.Basement2;
-import de.marcdoderer.shop_keeper.shop.Place;
-import de.marcdoderer.shop_keeper.shop.Shop;
+import de.marcdoderer.shop_keeper.shop.*;
 import de.marcdoderer.shop_keeper.shop.time.DayNightCircle;
 import de.marcdoderer.shop_keeper.util.FrameRate;
 
@@ -235,17 +232,17 @@ public class GameState extends State{
     }
 
     public final void setCameraTo(Vector2 position){
-        Vector3 cameraVec = gameCamera.position;
-        gameCamera.translate(WIDTH / 2f - position.x - cameraVec.x , HEIGHT / 2f + position.y - cameraVec.y);
+        gameCamera.position.set(position.x + WIDTH / 2f, position.y + HEIGHT / 2f, 0);
         gameCamera.update();
     }
 
     private Place[] initPlaces(){
-        final Place[] places = new Place[3];
+        final Place[] places = new Place[4];
         final PlaceData[] placeData = screen.gameManager.gameData.getPlaceDatas();
         places[Shop.SHOP_ID] = new Shop(this, dayNightCircle, placeData[Shop.SHOP_ID].getEntityDatas());
         places[Basement.BASEMENT_ID] = new Basement(this, dayNightCircle, placeData[Basement.BASEMENT_ID].getEntityDatas());
         places[Basement2.BASEMENT2_ID] = new Basement2(this, dayNightCircle, placeData[Basement2.BASEMENT2_ID].getEntityDatas());
+        places[Garden.GARDEN_ID] = new Garden(this, dayNightCircle, placeData[Garden.GARDEN_ID].getEntityDatas());
         return places;
     }
 
@@ -280,10 +277,12 @@ public class GameState extends State{
     }
 
     public PlaceData[] getPlaceData(){
-        PlaceData[] placeData = new PlaceData[3];
-        placeData[Shop.SHOP_ID] = places[Shop.SHOP_ID].getPlaceData();
-        placeData[Basement.BASEMENT_ID] = places[Basement.BASEMENT_ID].getPlaceData();
-        placeData[Basement2.BASEMENT2_ID] = places[Basement2.BASEMENT2_ID].getPlaceData();
+        PlaceData[] placeData = new PlaceData[places.length];
+        int i = 0;
+        for(Place place : places){
+            placeData[i] = place.getPlaceData();
+            i++;
+        }
 
         return placeData;
     }

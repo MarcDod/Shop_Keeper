@@ -29,9 +29,10 @@ public abstract class Place {
     public static int SHOP_ID = 0;
     public static int BASEMENT_ID = 1;
     public static int BASEMENT2_ID = 2;
+    public static int GARDEN_ID = 3;
 
     protected Sprite background;
-    protected Set<Sprite> topLayerTexture;
+    protected List<Sprite> topLayerTexture;
     protected WeightedGraph<Zone, Integer> graph;
     protected EntityManager manager;
     protected Vector2 position;
@@ -77,8 +78,8 @@ public abstract class Place {
     }
 
     public void render(SpriteBatch batch){
-        rayHandler.setCombinedMatrix(camera);
-        batch.draw(background, position.x,position.y, GameState.WIDTH, GameState.HEIGHT);
+        if(background != null)
+            batch.draw(background, position.x,position.y, GameState.WIDTH, GameState.HEIGHT);
         manager.renderEntities(batch);
         for(Sprite sprite  : topLayerTexture){
             sprite.draw(batch);
@@ -86,6 +87,7 @@ public abstract class Place {
     }
 
     public void renderLight(){
+        rayHandler.setCombinedMatrix(camera);
         rayHandler.updateAndRender();
     }
 

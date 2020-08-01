@@ -47,7 +47,7 @@ public class EntityFactory {
         sprite.setSize(width, height);
         sprite.setOriginCenter();
 
-        Body body = Util.createBody(width, height, posX, posY, world);
+        Body body = Util.createBody(width, height / 2f, posX, posY, world);
 
         //TODO: make dynamic this is just for test purpose;
         if(name.equals("chest")){

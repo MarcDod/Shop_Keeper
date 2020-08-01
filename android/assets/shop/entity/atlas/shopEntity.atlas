@@ -1,9 +1,16 @@
 
 shopEntity.png
-size: 128,128
+size: 1024,512
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+apple_tree
+  rotate: false
+  xy: 1, 109
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
 bar
   rotate: false
   xy: 1, 1
@@ -13,8 +20,15 @@ bar
   index: -1
 table
   rotate: false
-  xy: 9, 84
+  xy: 605, 386
   size: 56, 23
   orig: 56, 23
+  offset: 0, 0
+  index: -1
+tree
+  rotate: false
+  xy: 303, 109
+  size: 300, 300
+  orig: 300, 300
   offset: 0, 0
   index: -1
