@@ -1,7 +1,5 @@
 package de.marcdoderer.shop_keeper.screen.hud;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -18,11 +16,9 @@ import de.marcdoderer.shop_keeper.screen.state.GameState;
 import de.marcdoderer.shop_keeper.util.SpriteDragger;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
-public class InventarHud implements HudElement {
+public class InventoryHud implements HudElement {
 
     public static final float WIDTH = GameState.WIDTH * 0.4f;
     public static final float HEIGHT = GameState.HEIGHT * 0.4f;
@@ -51,7 +47,7 @@ public class InventarHud implements HudElement {
      * @param chest opend chest
      * @param gameCamera gameCamera
      */
-    public InventarHud(final GameState gameState, final Chest chest, final OrthographicCamera gameCamera){
+    public InventoryHud(final GameState gameState, final Chest chest, final OrthographicCamera gameCamera){
         this.chest = chest;
         this.gameCamera = gameCamera;
         this.gameState = gameState;
@@ -108,8 +104,8 @@ public class InventarHud implements HudElement {
     private void updateSprites(){
         this.itemSprites = new HashMap<Integer, Sprite>();
 
-        for(int pos : chest.getItemIDs().keySet()){
-            this.itemSprites.put(pos, ItemFactory.getItemRegistry().getSpriteByItemID(chest.getItemIDs().get(pos)));
+        for(int pos : chest.getItemDatas().keySet()){
+            this.itemSprites.put(pos, ItemFactory.getItemRegistry().getSpriteByItemID(chest.getItemDatas().get(pos).itemID));
         }
     }
 
@@ -162,7 +158,7 @@ public class InventarHud implements HudElement {
 
     private void dropItem(final int index){
         chest.selectItem(index);
-        gameState.tradeItemListener.perform((InteractiveZone) gameState.getPlayerZone(), 2);
+        gameState.takeItemListener.perform((InteractiveZone) gameState.getPlayerZone(), 2);
         updateSprites();
     }
 
@@ -180,7 +176,6 @@ public class InventarHud implements HudElement {
                 spriteDragger.mouseDragged(x, y);
             }
         }else {
-            if(spriteDragger != null)
             spriteDragger.mouseDragged(x, y);
         }
 

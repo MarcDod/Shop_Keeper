@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Json;
+import de.marcdoderer.shop_keeper.entities.items.ModItemData;
 import de.marcdoderer.shop_keeper.entities.items.ItemFactory;
 
 import java.io.File;
@@ -47,20 +48,20 @@ public class ModManager {
         assetManager.finishLoadingAsset(path + "items.atlas");
         TextureAtlas atlas = assetManager.get(path + "items.atlas");
         atlasList.put(modID, atlas);
-        ItemData itemData;
+        ModItemData modItemData;
         ItemFactory itemRegistry = ItemFactory.getItemRegistry();
         if (Gdx.app.getType() == Application.ApplicationType.Android) {
             FileHandle itemDir = assetManager.getFileHandleResolver().resolve(path + "items");
             for (FileHandle itemFile : itemDir.list()) {
-                itemData = json.fromJson(ItemData.class, itemFile.read());
-                itemRegistry.registerItemData(itemData.getFullID(), itemData);
+                modItemData = json.fromJson(ModItemData.class, itemFile.read());
+                itemRegistry.registerItemData(modItemData.getFullID(), modItemData);
             }
         } else {
             File itemDir = assetManager.getFileHandleResolver().resolve(path + "items").file();
             for (File itemFile : itemDir.listFiles()) {
                 try {
-                    itemData = json.fromJson(ItemData.class, new FileInputStream(itemFile));
-                    itemRegistry.registerItemData(itemData.getFullID(), itemData);
+                    modItemData = json.fromJson(ModItemData.class, new FileInputStream(itemFile));
+                    itemRegistry.registerItemData(modItemData.getFullID(), modItemData);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }

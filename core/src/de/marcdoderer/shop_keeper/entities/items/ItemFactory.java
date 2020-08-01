@@ -8,7 +8,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import de.marcdoderer.shop_keeper.animation.IdleAnimation;
 import de.marcdoderer.shop_keeper.animation.MoveAnimation;
-import de.marcdoderer.shop_keeper.manager.ItemData;
 import de.marcdoderer.shop_keeper.manager.ModManager;
 import de.marcdoderer.shop_keeper.screen.state.GameState;
 import de.marcdoderer.shop_keeper.util.Util;
@@ -18,7 +17,7 @@ import java.util.HashMap;
 public class ItemFactory {
     private final GameState gameState;
     private static ItemFactory itemRegistry;
-    private final HashMap<String, ItemData> itemDatas;
+    private final HashMap<String, ModItemData> itemDatas;
 
     private ItemFactory(GameState gameState) {
         this.gameState = gameState;
@@ -50,12 +49,12 @@ public class ItemFactory {
      * @param world    the world in witch the item is.
      * @return the item
      */
-    public Item createItem(final ItemData data, final Vector2 position, final World world) {
+    public Item createItem(final ModItemData data, final Vector2 position, final World world) {
         return createEntity(data, ModManager.getModManager().getAtlas(data.getModID()), data.getName(),
                 position, world, data.getWidth(), data.getHeigth());
     }
 
-    private Item createEntity(ItemData data, TextureAtlas atlas, String itemName, Vector2 position, World world, float width, float height) {
+    private Item createEntity(ModItemData data, TextureAtlas atlas, String itemName, Vector2 position, World world, float width, float height) {
         Sprite sprite = getSprite(atlas, itemName, width, height);
 
         Body entityBody = Util.crateKinematicBody(width / 2, height / 2, position.x, position.y, world);
@@ -71,7 +70,7 @@ public class ItemFactory {
         return sprite;
     }
 
-    public ItemData getItemData(Item item) {
+    public ModItemData getItemData(Item item) {
         return itemDatas.get(item.id);
     }
 
@@ -79,15 +78,15 @@ public class ItemFactory {
         return this.createItem(itemDatas.get(id), new Vector2(0, 0), gameState.world);
     }
 
-    public void registerItemData(String id, ItemData data) {
+    public void registerItemData(String id, ModItemData data) {
         this.itemDatas.put(id, data);
     }
 
     public Sprite getSpriteByItemID(String itemID) {
-        final ItemData itemData = itemDatas.get(itemID);
-        return getSprite(ModManager.getModManager().getAtlas(itemData.getModID()),
-                itemData.getName(),
-                itemData.getWidth(),
-                itemData.getHeigth());
+        final ModItemData modItemData = itemDatas.get(itemID);
+        return getSprite(ModManager.getModManager().getAtlas(modItemData.getModID()),
+                modItemData.getName(),
+                modItemData.getWidth(),
+                modItemData.getHeigth());
     }
 }

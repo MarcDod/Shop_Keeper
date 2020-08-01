@@ -65,20 +65,20 @@ public class GameScreen extends ScreenAdapter {
             }
 
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                if (button == Input.Buttons.LEFT) {
+                //if (button == Input.Buttons.LEFT) {
                     mouseClicked(screenX, screenY);
                     return true;
-                }
-                return false;
+                //}
+                //return false;
             }
 
             @Override
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-                if (button == Input.Buttons.LEFT) {
+                //if (button == Input.Buttons.LEFT) {
                     mouseReleased(screenX, screenY);
                     return true;
-                }
-                return false;
+                //}
+                //return false;
             }
         });
 
