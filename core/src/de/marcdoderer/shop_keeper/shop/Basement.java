@@ -38,10 +38,11 @@ public class Basement extends Place{
 
         rayHandler.setBlur(true);
         rayHandler.setBlurNum(1);
+        rayHandler.setCulling(false);
 
         rayHandler.setAmbientLight(0.3f);
 
-        PointLight test = new PointLight(rayHandler, 500, new Color(1, 1, 1, 0.7f), 900f / GameState.SCALE,  position.x + 560f / GameState.SCALE, position.y + 440f / GameState.SCALE);
+        PointLight test = new PointLight(rayHandler, 100, new Color(1, 1, 1, 0.7f), 900f / GameState.SCALE,  position.x + 560f / GameState.SCALE, position.y + 440f / GameState.SCALE);
         test.setContactFilter(Collision.LIGHT, Collision.LIGHT_GROUP, Collision.MASK_LIGHTS);
     }
 

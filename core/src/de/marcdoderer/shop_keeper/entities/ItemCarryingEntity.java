@@ -2,7 +2,6 @@ package de.marcdoderer.shop_keeper.entities;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import de.marcdoderer.shop_keeper.entities.items.Item;
 import de.marcdoderer.shop_keeper.entities.items.ItemCarry;
@@ -58,10 +57,9 @@ public class ItemCarryingEntity extends Entity implements ItemCarry {
     public EntityData getEntityData() {
         EntityData data = super.getEntityData();
         if(carriedItem == null) {
-            data.setCarriedItem(null);
             return data;
         }
-        data.setCarriedItem(carriedItem.id);
+        data.setCarriedItemData(carriedItem.createItemData());
         return data;
     }
 }

@@ -49,7 +49,7 @@ public class GameCommandExecutor extends CommandExecutor {
      * ensures gameState.dayNightCircle.seconds == time
      * @param time time in seconds
      */
-    public final void time(float time){
+    public final void timeSet(float time){
         if(time <= 86400 && time >= 0){
             gameState.dayNightCircle.setSeconds(time);
             console.log("time changed to " + time + " seconds", LogLevel.SUCCESS);
@@ -59,8 +59,17 @@ public class GameCommandExecutor extends CommandExecutor {
     }
 
     public final void getItem(final String itemID){
+        getItem(itemID, 1);
+    }
+    public final void getItem(final String itemID, final int count){
+        if(count < 1) {
+            console.log("invalid number of items " + itemID, LogLevel.ERROR);
+            return;
+        }
         removeItem();
-        this.gameState.player.carryItem(ItemFactory.getItemRegistry().createItemByID(itemID));
+        Item item = ItemFactory.getItemRegistry().createItemByID(itemID);
+        item.setStackCount(count);
+        this.gameState.player.carryItem(item);
         this.gameState.getCurrentPlace().addEntity(EntityManager.Layer.ITEM_LAYER, this.gameState.player.getCarriedItem());
 
         console.log("Successful created " + itemID, LogLevel.SUCCESS);

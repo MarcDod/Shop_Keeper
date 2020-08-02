@@ -4,7 +4,7 @@ public class PlayerData {
 
     private int playerZoneID;
     private int playerPlaceID;
-    private String carriedItemID;
+    private ItemData carriedItemID;
 
     public void setPlayerZoneID(final int playerTileID){
         this.playerZoneID = playerTileID;
@@ -22,11 +22,11 @@ public class PlayerData {
         return this.playerPlaceID;
     }
 
-    public String getCarriedItemID() {
+    public ItemData getCarriedItemData() {
         return this.carriedItemID;
     }
 
-    public void setCarriedItemID(String id) {
-        this.carriedItemID = id;
+    public void setCarriedItemData(ItemData data) {
+        this.carriedItemID = data;
     }
 }
