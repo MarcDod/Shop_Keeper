@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import de.marcdoderer.shop_keeper.entities.EntityFactory;
 import de.marcdoderer.shop_keeper.entities.ItemCarryingEntity;
 import de.marcdoderer.shop_keeper.entities.items.Item;
 import de.marcdoderer.shop_keeper.entities.items.ItemFactory;
@@ -32,6 +33,7 @@ public class Chest extends ItemCarryingEntity {
                 itemIDs.put(tuple.pos, tuple.id);
             }
         }
+        this.type = EntityFactory.EntityType.CHEST;
     }
 
     public Map<Integer, String> getItemIDs(){

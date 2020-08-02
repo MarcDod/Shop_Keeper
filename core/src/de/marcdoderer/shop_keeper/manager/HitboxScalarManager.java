@@ -36,11 +36,14 @@ public class HitboxScalarManager {
     }
 
     public HitboxScalarData getScalar(String spriteName) {
-        return scalingData.get(spriteName);
+        if(scalingData.containsKey(spriteName))
+            return scalingData.get(spriteName);
+
+        return HitboxScalarData.DEFAULT_HITBOX_SCALAR_DATA;
     }
 
     public void loadScalars() {
-        final FileHandle spriteScalars = Gdx.files.internal("SpriteScalars");
+        final FileHandle spriteScalars = Gdx.files.internal("spriteScalars");
         for (FileHandle spriteScalarFile : spriteScalars.list()) {
             final HitboxScalarData scalarData = new Json().fromJson(HitboxScalarData.class, spriteScalarFile);
             scalingData.put(spriteScalarFile.nameWithoutExtension(), scalarData);
