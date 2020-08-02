@@ -40,8 +40,8 @@ public class GameManager {
             entityData[0] = ed;
 
             EntityData ed1 = new Chest.ChestData();
-            ed1.setType(EntityFactory.EntityType.ITEM_CARRYING);
-            ed1.setName("chest");
+            ed1.setType(EntityFactory.EntityType.CHEST);
+            ed1.setName("table");
             ed1.setPosY(19.6f);
             ed1.setPosX(28.3f);
             ed1.setWidth(3f);
