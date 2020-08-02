@@ -11,6 +11,7 @@ import de.marcdoderer.shop_keeper.manager.EntityData;
 public class ItemCarryingEntity extends Entity implements ItemCarry {
 
     protected Item carriedItem;
+    protected Vector2 itemOffset;
 
     /**
      * Requires body.getUserData() instance Of BodyDef
@@ -19,8 +20,9 @@ public class ItemCarryingEntity extends Entity implements ItemCarry {
      * @param sprite sprite of the Entity
      * @param body  body of the Entity
      */
-    public ItemCarryingEntity(Sprite sprite, Body body, String entityType) {
+    public ItemCarryingEntity(Sprite sprite, Body body, String entityType, Vector2 itemOffset) {
         super(sprite, body, entityType);
+        this.itemOffset = itemOffset;
         this.type = EntityFactory.EntityType.ITEM_CARRYING;
     }
 
@@ -28,7 +30,7 @@ public class ItemCarryingEntity extends Entity implements ItemCarry {
     public void carryItem(Item item) {
         this.carriedItem = item;
         item.stopIdleAnimation();
-        carriedItem.teleportTo(sprite.getX() + sprite.getWidth()/ 2f + item.getWidth()/2f, sprite.getY() +(sprite.getHeight() + item.getHeight()) / 2f);
+        carriedItem.teleportTo(sprite.getX() + (sprite.getWidth() + item.getWidth()) * itemOffset.x, sprite.getY() +(sprite.getHeight() + item.getHeight()) * itemOffset.y);
     }
 
     @Override
