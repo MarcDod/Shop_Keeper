@@ -26,7 +26,7 @@ public class Chest extends ItemCarryingEntity {
      * @param entityType
      */
     public Chest(Sprite sprite, Body body, String entityType, ChestData cData) {
-        super(sprite, body, entityType);
+        super(sprite, body, entityType, new Vector2(0, 0));
         this.itemIDs = new HashMap<>();
         if(cData.savedItemsIds != null) {
             for (ItemPosTuple tuple : cData.savedItemsIds) {

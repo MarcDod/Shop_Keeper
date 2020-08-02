@@ -10,8 +10,7 @@ import de.marcdoderer.shop_keeper.animation.IdleAnimation;
 import de.marcdoderer.shop_keeper.animation.MoveAnimation;
 import de.marcdoderer.shop_keeper.entities.specialEntity.Chest;
 import de.marcdoderer.shop_keeper.manager.EntityData;
-import de.marcdoderer.shop_keeper.manager.HitboxScalarManager;
-import de.marcdoderer.shop_keeper.screen.GameScreen;
+import de.marcdoderer.shop_keeper.manager.SpriteDataManager;
 import de.marcdoderer.shop_keeper.screen.state.GameState;
 import de.marcdoderer.shop_keeper.util.Util;
 
@@ -25,7 +24,7 @@ public class EntityFactory {
 
     public EntityFactory(final GameState gameState){
         this.gameState = gameState;
-        HitboxScalarManager.getHitboxScalarManager(gameState.screen.assetManager).loadScalars();
+        SpriteDataManager.getSpriteManager(gameState.screen.assetManager).loadSpriteDatas();
     }
 
 
@@ -39,24 +38,24 @@ public class EntityFactory {
         float posX = eData.getPosX();
         float posY = eData.getPosY();
         EntityType type = eData.getType();
-        HitboxScalarData hData = HitboxScalarManager.getHitboxScalarManager().getScalar(name);
+        SpriteData sData = SpriteDataManager.getSpriteDataManager().getSpriteData(name);
         TextureRegion region = atlas.findRegion(name);
 
         Sprite sprite = new Sprite(region);
         sprite.setSize(width, height);
         sprite.setOriginCenter();
-        sprite.setOrigin(sprite.getOriginX() + sprite.getWidth() * hData.getPosScalarX(),
-                sprite.getOriginY() - (height - hData.getScalarY() * height)/2f + sprite.getHeight() * hData.getPosScalarY());
+        sprite.setOrigin(sprite.getOriginX() + sprite.getWidth() * sData.getPosScalarX(),
+                sprite.getOriginY() - (height - sData.getScalarY() * height)/2f + sprite.getHeight() * sData.getPosScalarY());
 
 
-        Body body = Util.createBody(hData.getScalarX() * width, hData.getScalarY() * height,
+        Body body = Util.createBody(sData.getScalarX() * width, sData.getScalarY() * height,
                 posX, posY, world);
 
 
         if(type == EntityType.ENTITY)
             return new Entity(sprite, body, name);
         if(type == EntityType.ITEM_CARRYING)
-            return new ItemCarryingEntity(sprite, body, name);
+            return new ItemCarryingEntity(sprite, body, name, new Vector2(sData.getItemX(), sData.getItemY()));
         if(type == EntityType.MOVABLE)
             return new MovableEntity(sprite, body, new MoveAnimation(sprite), new IdleAnimation(sprite));
         if(type == EntityType.MOVABLE_ITEM_CARRYING)
