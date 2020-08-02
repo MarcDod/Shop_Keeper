@@ -1,9 +1,7 @@
 package de.marcdoderer.shop_keeper.shop;
 
 import box2dLight.RayHandler;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -15,14 +13,12 @@ import de.marcdoderer.shop_keeper.entities.EntityManager;
 import de.marcdoderer.shop_keeper.manager.EntityData;
 import de.marcdoderer.shop_keeper.manager.PlaceData;
 import de.marcdoderer.shop_keeper.movement.Zone;
-import de.marcdoderer.shop_keeper.screen.GameScreen;
 import de.marcdoderer.shop_keeper.screen.state.GameState;
 import de.marcdoderer.shop_keeper.shop.loader.PlaceLoader;
 import de.marcdoderer.shop_keeper.shop.time.DayNightCircle;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 public abstract class Place {
 
@@ -66,11 +62,13 @@ public abstract class Place {
         return this.graph;
     }
 
-    public void drawShape(final ShapeRenderer shapeRenderer){
-        for(int i = 0; i < graph.numberOfNodes(); i++){
-            graph.getNodeMetaData(i).drawShape(shapeRenderer);
+    public void drawShape(final ShapeRenderer shapeRenderer, boolean drawGrid, boolean drawPaths){
+        if(drawGrid) {
+            for (int i = 0; i < graph.numberOfNodes(); i++) {
+                graph.getNodeMetaData(i).drawShape(shapeRenderer);
+            }
         }
-        loader.draw(shapeRenderer);
+        if(drawPaths) loader.draw(shapeRenderer);
     }
 
     public Vector2 getPosition(){
