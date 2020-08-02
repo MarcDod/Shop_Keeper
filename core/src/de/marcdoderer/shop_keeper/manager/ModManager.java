@@ -69,16 +69,9 @@ public class ModManager {
     }
 
     public void loadModData() {
-        if (Gdx.app.getType() == Application.ApplicationType.Android) {
-            final FileHandle modsDir = Gdx.files.internal("mods/");
-            for (FileHandle modDir : modsDir.list()) {
-                registerMod(modDir.name());
-            }
-        } else {
-            File modsDir = assetManager.getFileHandleResolver().resolve("mods").file();
-            for (File modDir : modsDir.listFiles()) {
-                registerMod(modDir.getName());
-            }
+        final FileHandle modsDir = Gdx.files.internal("mods/");
+        for (FileHandle modDir : modsDir.list()) {
+            registerMod(modDir.name());
         }
     }
 
