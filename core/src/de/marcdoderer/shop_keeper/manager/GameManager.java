@@ -5,6 +5,7 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Json;
 import de.marcdoderer.shop_keeper.entities.EntityFactory;
 import de.marcdoderer.shop_keeper.entities.specialEntity.Chest;
+import de.marcdoderer.shop_keeper.entities.specialEntity.Tree;
 import de.marcdoderer.shop_keeper.shop.Basement;
 import de.marcdoderer.shop_keeper.shop.Basement2;
 import de.marcdoderer.shop_keeper.shop.Garden;
@@ -55,13 +56,17 @@ public class GameManager {
             placeData[Garden.GARDEN_ID] = new PlaceData();
             EntityData[] entityData1 = new EntityData[1];
 
-            EntityData tree = new EntityData();
+            Tree.TreeData tree = new Tree.TreeData();
             tree.setName("tree");
             tree.setPosY(15f);
             tree.setPosX(70.6f);
             tree.setWidth(11.4f);
             tree.setHeight(11.4f);
-            tree.setType(EntityFactory.EntityType.ITEM_CARRYING);
+            tree.setType(EntityFactory.EntityType.TREE);
+            tree.setPlaceID(Garden.GARDEN_ID);
+            tree.setSpawnTime(10000);
+            tree.setCurrentTimeInSeconds(0);
+            tree.setProducingItem("shopKeeper:apple");
             entityData1[0] = tree;
             placeData[Garden.GARDEN_ID].setEntity(entityData1);
 

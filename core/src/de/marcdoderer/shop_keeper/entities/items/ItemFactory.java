@@ -59,7 +59,7 @@ public class ItemFactory {
 
         Body entityBody = Util.crateKinematicBody(width / 2, height / 2, position.x, position.y, world);
 
-        return new Item(sprite, entityBody, new MoveAnimation(sprite), new IdleAnimation(sprite), data);
+        return new Item(sprite, entityBody, new MoveAnimation(sprite), new IdleAnimation(sprite), data, 1);
     }
 
     private Sprite getSprite(TextureAtlas atlas, String itemName, float width, float height) {

@@ -13,14 +13,13 @@ import de.marcdoderer.shop_keeper.screen.hud.HudElement;
 public class DayNightCircle implements HudElement {
 
     private float seconds;
-    private final float speedUp;
+    public final float speedUp;
     private int minutes;
     private int hours;
     private boolean visible;
 
 
     private final BitmapFont font;
-
 
     public DayNightCircle(final float seconds){
         this.seconds = seconds;

@@ -9,14 +9,16 @@ import com.badlogic.gdx.physics.box2d.World;
 import de.marcdoderer.shop_keeper.animation.IdleAnimation;
 import de.marcdoderer.shop_keeper.animation.MoveAnimation;
 import de.marcdoderer.shop_keeper.entities.specialEntity.Chest;
+import de.marcdoderer.shop_keeper.entities.specialEntity.Tree;
 import de.marcdoderer.shop_keeper.manager.EntityData;
 import de.marcdoderer.shop_keeper.manager.SpriteDataManager;
 import de.marcdoderer.shop_keeper.screen.state.GameState;
+import de.marcdoderer.shop_keeper.shop.Garden;
 import de.marcdoderer.shop_keeper.util.Util;
 
 public class EntityFactory {
     public enum EntityType{
-        ENTITY, ITEM_CARRYING, MOVABLE, MOVABLE_ITEM_CARRYING, CHEST
+        ENTITY, ITEM_CARRYING, MOVABLE, MOVABLE_ITEM_CARRYING, CHEST, TREE
     }
 
     public final static String atlasUrl = "shop/entity/atlas/shopEntity.atlas";
@@ -60,9 +62,10 @@ public class EntityFactory {
             return new MovableEntity(sprite, body, new MoveAnimation(sprite), new IdleAnimation(sprite));
         if(type == EntityType.MOVABLE_ITEM_CARRYING)
             return null;
-        if(type == EntityType.CHEST){
+        if(type == EntityType.CHEST)
             return new Chest(sprite, body, name, (Chest.ChestData) eData);
-        }
+        if(type == EntityType.TREE)
+            return new Tree(sprite, body, name, new Vector2(sData.getItemX(), sData.getItemY()), gameState, (Tree.TreeData) eData);//TODO: don^t hardcode
         return null;
     }
 }

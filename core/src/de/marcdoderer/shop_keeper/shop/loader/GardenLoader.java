@@ -50,6 +50,9 @@ public class GardenLoader extends PlaceLoader{
         Zone shopZone = zones.remove(SHOP_EXIT);
         zones.add(SHOP_EXIT, shopZone.makeExitZoneCopy(ShopLoader.GARDEN_EXIT, Shop.SHOP_ID, gameState.exitZoneListener));
 
+        Zone treeZone = zones.remove(getGridID(6, 3));
+        zones.add(treeZone.getZoneID(), treeZone.makeEntityZoneCopy(entityList.get(0), gameState.takeItemListener));
+
         return zones;
     }
 }
