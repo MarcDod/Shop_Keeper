@@ -58,6 +58,7 @@ public class GameManager {
 
             Tree.TreeData tree = new Tree.TreeData();
             tree.setName("tree");
+            tree.setBloomingName("apple_tree");
             tree.setPosY(15f);
             tree.setPosX(70.6f);
             tree.setWidth(11.4f);

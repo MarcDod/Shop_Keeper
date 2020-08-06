@@ -1,6 +1,7 @@
 package de.marcdoderer.shop_keeper.entities.specialEntity;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import de.marcdoderer.shop_keeper.entities.EntityFactory;
@@ -16,6 +17,8 @@ public class Tree extends ItemCarryingEntity {
     private final GameState gameState;
     private final String prodicungItemID;
     private final int placeID;
+    private final Sprite bloomingTree;
+    private final String bloomingName;
 
     //TODO: make a currect time
     private final float spawnTime;
@@ -26,16 +29,19 @@ public class Tree extends ItemCarryingEntity {
      * Requires body.getFixtureList().first().getUserData instance Of FixtureDef
      *
      * @param sprite     sprite of the Entity
+     * @param bloomingTree sprite of the blooming
      * @param body       body of the Entity
      * @param entityType
      * @param itemOffset
      */
-    public Tree(Sprite sprite, Body body, String entityType, Vector2 itemOffset, GameState gameState, TreeData treeData) {
+    public Tree(Sprite sprite, Sprite bloomingTree, Body body, String entityType, Vector2 itemOffset, GameState gameState, TreeData treeData) {
         super(sprite, body, entityType, itemOffset);
         this.type = EntityFactory.EntityType.TREE;
         this.gameState = gameState;
         this.prodicungItemID = treeData.producingItem;
         this.placeID = treeData.placeID;
+        this.bloomingTree = bloomingTree;
+        this.bloomingName = treeData.bloomingName;
 
         this.spawnTime = treeData.spawnTime;
         this.currentTimeInSeconds = treeData.currentTimeInSeconds;
@@ -57,6 +63,17 @@ public class Tree extends ItemCarryingEntity {
     }
 
     @Override
+    public void render(SpriteBatch batch) {
+        if(carriedItem == null) {
+            super.render(batch);
+        }else{
+            Vector2 position = body.getPosition();
+            bloomingTree.setOriginBasedPosition(position.x, position.y);
+            bloomingTree.draw(batch);
+        }
+    }
+
+    @Override
     public EntityData getEntityData() {
         EntityData eData = super.getEntityData();
         TreeData treeData = new TreeData();
@@ -65,7 +82,7 @@ public class Tree extends ItemCarryingEntity {
         treeData.currentTimeInSeconds = currentTimeInSeconds;
         treeData.placeID = placeID;
         treeData.spawnTime = spawnTime;
-
+        treeData.bloomingName = bloomingName;
         return treeData;
     }
 
@@ -74,6 +91,7 @@ public class Tree extends ItemCarryingEntity {
         private int placeID;
         private float spawnTime;
         private float currentTimeInSeconds;
+        private String bloomingName;
 
         private void setEntityData(EntityData eData){
             this.setType(eData.getType());
@@ -99,6 +117,14 @@ public class Tree extends ItemCarryingEntity {
 
         public void setCurrentTimeInSeconds(float currentTimeInSeconds){
             this.currentTimeInSeconds = currentTimeInSeconds;
+        }
+
+        public void setBloomingName(String bloomingName){
+            this.bloomingName = bloomingName;
+        }
+
+        public String getBloomingName(){
+            return this.bloomingName;
         }
     }
 }

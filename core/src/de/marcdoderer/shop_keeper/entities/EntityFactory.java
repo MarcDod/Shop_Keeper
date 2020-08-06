@@ -64,8 +64,15 @@ public class EntityFactory {
             return null;
         if(type == EntityType.CHEST)
             return new Chest(sprite, body, name, (Chest.ChestData) eData);
-        if(type == EntityType.TREE)
-            return new Tree(sprite, body, name, new Vector2(sData.getItemX(), sData.getItemY()), gameState, (Tree.TreeData) eData);//TODO: don^t hardcode
+        if(type == EntityType.TREE) {
+            Tree.TreeData tData = (Tree.TreeData) eData;
+            TextureRegion bloomingTreeRegion = atlas.findRegion(tData.getBloomingName());
+            Sprite bloomingTree = new Sprite(bloomingTreeRegion);
+            bloomingTree.setSize(sprite.getWidth(), sprite.getHeight());
+            bloomingTree.setOriginCenter();
+            bloomingTree.setOrigin(sprite.getOriginX(), sprite.getOriginY());
+            return new Tree(sprite, bloomingTree, body, name, new Vector2(sData.getItemX(), sData.getItemY()), gameState, tData);
+        }
         return null;
     }
 }
