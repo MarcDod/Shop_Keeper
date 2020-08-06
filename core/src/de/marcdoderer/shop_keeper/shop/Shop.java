@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import de.marcdoderer.shop_keeper.manager.EntityData;
-import de.marcdoderer.shop_keeper.screen.GameScreen;
 import de.marcdoderer.shop_keeper.screen.state.GameState;
 import de.marcdoderer.shop_keeper.shop.loader.ShopLoader;
 import de.marcdoderer.shop_keeper.shop.time.DayNightCircle;
@@ -33,7 +32,7 @@ public class Shop extends Place{
         lamp.setActive(dayNightCircle.isNight());
         sunTop.setColor(dayNightCircle.getSunColor());
         sunLeft.setColor(dayNightCircle.getSunColor());
-        rayHandler.setAmbientLight(dayNightCircle.getAmbientLight());
+        rayHandler.setAmbientLight(dayNightCircle.getAmbientLightIntensity());
     }
 
     @Override

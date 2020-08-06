@@ -8,8 +8,8 @@ import de.marcdoderer.shop_keeper.screen.GameScreen;
 
 public class Player extends Character{
 
-    public Player(Sprite sprite, Body body, SpriteAnimator moveAnimation, final SpriteAnimator idleAnimation, String name) {
-        super(sprite, body, moveAnimation, idleAnimation, name);
+    public Player(Sprite sprite, Body body, SpriteAnimator moveAnimation, final SpriteAnimator idleAnimation, String name, int currendPlaceID) {
+        super(sprite, body, moveAnimation, idleAnimation, name, currendPlaceID);
     }
 
 

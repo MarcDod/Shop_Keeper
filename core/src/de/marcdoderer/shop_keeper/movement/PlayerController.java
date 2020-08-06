@@ -7,6 +7,7 @@ import de.marcdoderer.shop_keeper.astar.WeightedGraph;
 import de.marcdoderer.shop_keeper.command.ZoneBasedMoveCommand;
 import de.marcdoderer.shop_keeper.entities.MovableEntity;
 import de.marcdoderer.shop_keeper.entities.Player;
+import de.marcdoderer.shop_keeper.listener.ZoneListener;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -71,7 +72,7 @@ public class PlayerController {
         if(clickedZone == null) return;
         if(clickedZone.getZoneID() == player.getCurrentZoneID()){
             if(move == null)
-                clickedZone.startEvent(1);
+                clickedZone.startEvent(ZoneListener.PLAYER_CLICKED_AGAIN, player);
             return;
         }
 
@@ -131,7 +132,7 @@ public class PlayerController {
                 player.stopAnimation(MovableEntity.MOVE_ANIMATION);
                 player.startAnimation(MovableEntity.IDLE_ANIMATION);
                 final Zone zone = graph.getNodeMetaData(player.getCurrentZoneID());
-                zone.startEvent(0);
+                zone.startEvent(ZoneListener.PLAYER_WALKED_ONTO, player);
                 move = null;
             }
         }

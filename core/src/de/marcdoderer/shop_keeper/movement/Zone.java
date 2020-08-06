@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import de.marcdoderer.shop_keeper.astar.Position;
+import de.marcdoderer.shop_keeper.entities.Character;
 import de.marcdoderer.shop_keeper.entities.Entity;
 import de.marcdoderer.shop_keeper.listener.ExitZoneListener;
 import de.marcdoderer.shop_keeper.listener.ZoneListener;
@@ -85,7 +86,7 @@ public class Zone extends Position {
     /**
      * Does nothing in this class
      */
-    public void startEvent(final int eventID){ };
+    public void startEvent(final int eventID, final Character interactedCharacter){ };
 
     /**
      * Creats a copy of this Zone. but it is a ExitZone

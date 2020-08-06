@@ -1,5 +1,6 @@
 package de.marcdoderer.shop_keeper.listener;
 
+import de.marcdoderer.shop_keeper.entities.Character;
 import de.marcdoderer.shop_keeper.entities.Entity;
 import de.marcdoderer.shop_keeper.entities.EntityManager;
 import de.marcdoderer.shop_keeper.entities.ItemCarryingEntity;
@@ -20,23 +21,23 @@ public class TradeItemListener implements ZoneListener{
     }
 
     @Override
-    public void perform(InteractiveZone source, int eventID) {
+    public void perform(InteractiveZone source, int eventID, Character interactedCharacter) {
         if(!(source instanceof EntityZone)) throw new IllegalArgumentException("zone has to be from EntityZone class");
         final Entity entity = ((EntityZone) source).getEntity();
         if(!(entity instanceof ItemCarryingEntity)) throw new IllegalArgumentException("Entity has to be from ItemCarryingEntity class");
         final ItemCarryingEntity entityWithItem = (ItemCarryingEntity) entity;
 
-        if(entityWithItem.getCarriedItem() != null && gameState.player.getCarriedItem() != null || entityWithItem.getCarriedItem() == null && gameState.player.getCarriedItem() == null) return;
+        if(entityWithItem.getCarriedItem() != null && interactedCharacter.getCarriedItem() != null || entityWithItem.getCarriedItem() == null && interactedCharacter.getCarriedItem() == null) return;
 
         if(entityWithItem.getCarriedItem() != null){
-            gameState.player.carryItem(entityWithItem.getCarriedItem());
-            if(!gameState.getCurrentPlace().hasEntity(entityWithItem.getCarriedItem())) {
-                gameState.getCurrentPlace().addEntity(EntityManager.Layer.ITEM_LAYER, entityWithItem.getCarriedItem());
+            interactedCharacter.carryItem(entityWithItem.getCarriedItem());
+            if(!gameState.getPlace(interactedCharacter.getCurrentPlaceID()).hasEntity(entityWithItem.getCarriedItem())) {
+                gameState.getPlace(interactedCharacter.getCurrentPlaceID()).addEntity(EntityManager.Layer.ITEM_LAYER, entityWithItem.getCarriedItem());
             }
             entityWithItem.removeCarriedItem();
         }else{
-            entityWithItem.carryItem(gameState.player.getCarriedItem());
-            gameState.player.removeCarriedItem();
+            entityWithItem.carryItem(interactedCharacter.getCarriedItem());
+            interactedCharacter.removeCarriedItem();
         }
     }
 }

@@ -82,7 +82,7 @@ public class Tree extends ItemCarryingEntity {
             this.setHeight(eData.getHeight());
             this.setWidth(eData.getWidth());
             this.setPosX(eData.getPosX());
-            this.setPosY(eData.getPosX());
+            this.setPosY(eData.getPosY());
         }
 
         public void setProducingItem(String producingItem){

@@ -118,7 +118,7 @@ public class GameState extends State{
 
     public void openInventar(final Chest chest){
         if(inventoryHud != null) return;
-        inventoryHud = new InventoryHud(this, chest, gameCamera);
+        inventoryHud = new InventoryHud(this, chest);
         this.ingameHud.addHudElement(inventoryHud);
         this.playerController.setActive(false);
     }
@@ -255,7 +255,7 @@ public class GameState extends State{
         final CharacterFactory characterFabric = new CharacterFactory(this);
 
         final Vector2 position = places[currentPlace].getGraph().getNodeMetaData(playerData.getPlayerZoneID()).getCenter();
-        final Player player = characterFabric.createPlayer("Player", position, world);
+        final Player player = characterFabric.createPlayer("Player", position, world, playerData.getPlayerPlaceID());
 
         player.setCurrentZoneID(playerData.getPlayerZoneID());
         player.startAnimation(MovableEntity.IDLE_ANIMATION);
