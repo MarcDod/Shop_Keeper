@@ -11,8 +11,8 @@ R = RegisterA <br>
 
 <details closed>
   <summary>ADD</summary>
-    &nbsp;0000 01II IIII [RRRR]A <br>
-    &nbsp;A = A + I und c = 0 <br> 
-    &nbsp;<strong>Wenn</strong> (A + I) >= 2^16 <strong>dann:</strong> c = 1 und A = 2^16 - (A + I) <br>
-    &nbsp;<strong>Wenn</strong> (A + I) = 0 <strong>dann:</strong> z = 1 sonst: z = 0
+    &nbsp;&nbsp;&nbsp;0000 01II IIII [RRRR]A <br>
+    &nbsp;&nbsp;&nbsp;A = A + I und c = 0 <br> 
+    &nbsp;&nbsp;&nbsp;<strong>Wenn</strong> (A + I) >= 2^16 <strong>dann:</strong> c = 1 und A = 2^16 - (A + I) <br>
+    &nbsp;&nbsp;&nbsp;<strong>Wenn</strong> (A + I) = 0 <strong>dann:</strong> z = 1 sonst: z = 0
 </details>
