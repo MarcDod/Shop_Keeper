@@ -203,5 +203,8 @@ PC = Program Counter
 <details closed>
   <summary>JUMPC</summary>
     &nbsp;&nbsp;&nbsp;1010 0-1- BBBB AAAA<br>
-    &nbsp;&nbsp;&nbsp;<strong>Wenn:</strong> C = 1 <strong>Dann:</strong> ```diff ! JUMP ``` 
+    &nbsp;&nbsp;&nbsp;<strong>Wenn:</strong> C = 1 <strong>Dann:</strong> 
+    ```diff 
+      ! &nbsp;&nbsp;&nbsp;JUMP 
+    ``` 
 </details>
