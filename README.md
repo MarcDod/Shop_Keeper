@@ -3,9 +3,9 @@ handle a fantasy Shop with Ultra HD Graphic
 
 ![alt text](https://github.com/MarcDod/Shop_keeper/blob/master/core/assets/npc/npc/child0.png?raw=true)
 
-Legende:
-  I => zahl
-  R => Register
+# Befehle
+I = Zahl
+R = Register
 
 <details closed>
   <summary>ADD</summary>
