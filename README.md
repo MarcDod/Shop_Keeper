@@ -3,8 +3,11 @@ handle a fantasy Shop with Ultra HD Graphic
 
 ![alt text](https://github.com/MarcDod/Shop_keeper/blob/master/core/assets/npc/npc/child0.png?raw=true)
 
+Legende:
+  I => zahl
+  R => Register
+
 <details closed>
-  <summary>Befehl</summary>
-  
-  jop
+  <summary>ADD</summary>
+  0000 01II IIII RRRR
 </details>
