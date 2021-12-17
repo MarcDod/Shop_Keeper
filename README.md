@@ -5,9 +5,14 @@ handle a fantasy Shop with Ultra HD Graphic
 
 # Befehle
 I = Zahl
-R = Register
+R = RegisterA
+<RRRR>A = register für A
+<RRRR>B = register für B
 
 <details closed>
   <summary>ADD</summary>
-  0000 01II IIII RRRR
+  0000 01II IIII <RRRR>A \n
+  A = A + I und c = 0 \n 
+  Wenn (A + I) >= 2^16 dann: c = 1 und A = 2^16 - (A + I) \n
+  Wenn (A + I) = 0 dann: z = 1 sonst: z = 0
 </details>
