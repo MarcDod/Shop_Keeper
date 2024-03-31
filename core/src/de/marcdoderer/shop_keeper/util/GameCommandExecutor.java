@@ -13,21 +13,23 @@ import de.marcdoderer.shop_keeper.screen.state.GameState;
 public class GameCommandExecutor extends CommandExecutor {
     private final Console console;
     private final GameState gameState;
-    public GameCommandExecutor(final Console console, final GameState gameState){
+
+    public GameCommandExecutor(final Console console, final GameState gameState) {
         this.console = console;
         this.gameState = gameState;
     }
 
-    public final void say(String t){
-        console.log(t , LogLevel.SUCCESS);
+    public final void say(String t) {
+        console.log(t, LogLevel.SUCCESS);
     }
 
     /**
      * this operation is to change the time
+     *
      * @param time day or night
      */
-    public final void time(String time){
-        switch(time){
+    public final void time(String time) {
+        switch (time) {
             case "day":
                 gameState.dayNightCircle.setSeconds(28800);
                 console.log("Time set day", LogLevel.SUCCESS);
@@ -45,12 +47,13 @@ public class GameCommandExecutor extends CommandExecutor {
      * Requires time <= 86400;
      * Requires time >= 0;
      * this operation is to change the time
-     *
+     * <p>
      * ensures gameState.dayNightCircle.seconds == time
+     *
      * @param time time in seconds
      */
-    public final void timeSet(float time){
-        if(time <= 86400 && time >= 0){
+    public final void time(float time) {
+        if (time <= 86400 && time >= 0) {
             gameState.dayNightCircle.setSeconds(time);
             console.log("time changed to " + time + " seconds", LogLevel.SUCCESS);
             return;
@@ -103,12 +106,36 @@ public class GameCommandExecutor extends CommandExecutor {
      */
     public final void removeItem(){
         final Item oldItem = this.gameState.player.getCarriedItem();
-        if(oldItem != null){
+        if (oldItem != null) {
             this.gameState.player.removeCarriedItem();
             oldItem.dispose();
             this.gameState.getPlace(this.gameState.player.getCurrentPlaceID()).removeEntity(EntityManager.Layer.ITEM_LAYER, oldItem);
             console.log("Successful remove " + oldItem.id, LogLevel.SUCCESS);
 
+        }
+    }
+
+    public final void enableDebug(boolean enabled) {
+        this.gameState.debugOn = enabled;
+        console.log(((enabled) ? "Enabled" : "Disabled") + " Debug", LogLevel.SUCCESS);
+    }
+
+    public final void toggleDebug(String type) {
+        switch (type) {
+            case "hitbox":
+                gameState.debugHitbox ^= true;//toggle code
+                console.log(((gameState.debugHitbox) ? "Enabled" : "Disabled") + " Debug hitbox", LogLevel.SUCCESS);
+                break;
+            case "grid":
+                gameState.debugGrid ^= true;//toggle code
+                console.log(((gameState.debugGrid) ? "Enabled" : "Disabled") + " Debug grid", LogLevel.SUCCESS);
+                break;
+            case "path":
+                gameState.debugPath ^= true;//toggle code
+                console.log(((gameState.debugPath) ? "Enabled" : "Disabled") + " Debug path", LogLevel.SUCCESS);
+                break;
+            default:
+                console.log("there is no such debug type", LogLevel.ERROR);
         }
     }
 }
