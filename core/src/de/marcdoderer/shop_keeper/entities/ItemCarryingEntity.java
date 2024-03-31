@@ -58,10 +58,9 @@ public class ItemCarryingEntity extends Entity implements ItemCarry {
     public EntityData getEntityData() {
         EntityData data = super.getEntityData();
         if(carriedItem == null) {
-            data.setCarriedItem(null);
             return data;
         }
-        data.setCarriedItem(carriedItem.id);
+        data.setCarriedItemData(carriedItem.createItemData());
         return data;
     }
 }

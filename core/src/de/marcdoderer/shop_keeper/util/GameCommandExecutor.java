@@ -61,20 +61,55 @@ public class GameCommandExecutor extends CommandExecutor {
         console.log("time could not be changed", LogLevel.ERROR);
     }
 
-    public final void getItem(final String itemID) {
+    /**
+     * calls getItem(itemID, 1);
+     * @param itemID the ID of the item that should be created.
+     */
+    public final void getItem(final String itemID){
+        getItem(itemID, 1);
+    }
+
+    /**
+     * Requires count >= 1;
+     *
+     * creates a Item from nothing
+     *
+     * calls removeItem();
+     * creates a Item by the itemID.
+     * gives the Item to the Player to carry.
+     * gives the Item to the place the Player is currently in.
+     *
+     * @param itemID the ID of the item that should be created.
+     * @param count the amount of items that should be created.
+     */
+    public final void getItem(final String itemID, final int count){
+        if(count < 1) {
+            console.log("invalid number of items " + itemID, LogLevel.ERROR);
+            return;
+        }
         removeItem();
-        this.gameState.player.carryItem(ItemFactory.getItemRegistry().createItemByID(itemID));
+        Item item = ItemFactory.getItemRegistry().createItemByID(itemID);
+        item.setStackCount(count);
+        this.gameState.player.carryItem(item);
         this.gameState.getCurrentPlace().addEntity(EntityManager.Layer.ITEM_LAYER, this.gameState.player.getCarriedItem());
 
         console.log("Successful created " + itemID, LogLevel.SUCCESS);
     }
 
-    public final void removeItem() {
+    /**
+     * Removes the Item the player is holding at the moment.
+     * If the player not holding anything the method will do nothing;
+     *
+     * removes the item from the Player.
+     * disposes the item
+     * removes the item from the Player currentPlace
+     */
+    public final void removeItem(){
         final Item oldItem = this.gameState.player.getCarriedItem();
         if (oldItem != null) {
             this.gameState.player.removeCarriedItem();
             oldItem.dispose();
-            this.gameState.getCurrentPlace().removeEntity(EntityManager.Layer.ITEM_LAYER, oldItem);
+            this.gameState.getPlace(this.gameState.player.getCurrentPlaceID()).removeEntity(EntityManager.Layer.ITEM_LAYER, oldItem);
             console.log("Successful remove " + oldItem.id, LogLevel.SUCCESS);
 
         }

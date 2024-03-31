@@ -1,5 +1,6 @@
 package de.marcdoderer.shop_keeper.listener;
 
+import de.marcdoderer.shop_keeper.entities.Character;
 import de.marcdoderer.shop_keeper.entities.EntityManager;
 import de.marcdoderer.shop_keeper.entities.Player;
 import de.marcdoderer.shop_keeper.entities.items.Item;
@@ -19,28 +20,30 @@ public class ExitZoneListener implements ZoneListener{
     }
 
     @Override
-    public void perform(InteractiveZone source, int eventID) {
+    public void perform(InteractiveZone source, int eventID, Character interactedCharacter) {
         if(!(source instanceof ExitZone)) throw new IllegalArgumentException("source has to be form class ExitZone");
         ExitZone exitZone = (ExitZone) source;
 
-        final Place place = gameState.getCurrentPlace();
+        final Place place = gameState.getPlace(interactedCharacter.getCurrentPlaceID());
         final Place nextPlace = gameState.getPlace(exitZone.nextPlaceID);
-        final Player player = gameState.player;
+
         gameState.setCameraTo(nextPlace.getPosition());
-        final Item carriedItem = player.getCarriedItem();
+        final Item carriedItem = interactedCharacter.getCarriedItem();
 
-        place.removeEntity(EntityManager.Layer.ENTITY_LAYER, player);
-        nextPlace.addEntity(EntityManager.Layer.ENTITY_LAYER, player);
+        place.removeEntity(EntityManager.Layer.ENTITY_LAYER, interactedCharacter);
+        nextPlace.addEntity(EntityManager.Layer.ENTITY_LAYER, interactedCharacter);
 
-        player.teleportTo(nextPlace.getGraph().getNodeMetaData(exitZone.nextZoneID).getCenter());
+        interactedCharacter.teleportTo(nextPlace.getGraph().getNodeMetaData(exitZone.nextZoneID).getCenter());
         if(carriedItem != null){
             place.removeEntity(EntityManager.Layer.ITEM_LAYER, carriedItem);
             nextPlace.addEntity(EntityManager.Layer.ITEM_LAYER, carriedItem);
-            player.carryItem(carriedItem);
+            interactedCharacter.carryItem(carriedItem);
         }
-        player.setCurrentZoneID(exitZone.nextZoneID);
+        interactedCharacter.setCurrentZoneID(exitZone.nextZoneID);
+        interactedCharacter.setCurrentPlaceID(nextPlace.getID());
 
-
-        gameState.changeCurrentPlace(exitZone.nextPlaceID);
+        if(eventID == PLAYER_WALKED_ONTO || eventID == PLAYER_CLICKED_AGAIN){
+            gameState.changeCurrentPlace(exitZone.nextPlaceID);
+        }
     }
 }

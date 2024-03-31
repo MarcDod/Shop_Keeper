@@ -1,5 +1,6 @@
 package de.marcdoderer.shop_keeper.movement;
 
+import de.marcdoderer.shop_keeper.entities.Character;
 import de.marcdoderer.shop_keeper.listener.ZoneListener;
 
 /**
@@ -15,7 +16,7 @@ public class InteractiveZone extends Zone{
     }
 
     @Override
-    public void startEvent(final int eventID) {
-        zoneListener.perform(this, eventID);
+    public void startEvent(final int eventID, Character interactedCharacter) {
+        zoneListener.perform(this, eventID, interactedCharacter);
     }
 }

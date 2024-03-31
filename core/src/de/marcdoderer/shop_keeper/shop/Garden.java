@@ -1,7 +1,5 @@
 package de.marcdoderer.shop_keeper.shop;
 
-import box2dLight.DirectionalLight;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -9,7 +7,6 @@ import com.badlogic.gdx.math.Vector2;
 import de.marcdoderer.shop_keeper.manager.EntityData;
 import de.marcdoderer.shop_keeper.screen.state.GameState;
 import de.marcdoderer.shop_keeper.shop.loader.GardenLoader;
-import de.marcdoderer.shop_keeper.shop.loader.PlaceLoader;
 import de.marcdoderer.shop_keeper.shop.time.DayNightCircle;
 
 public class Garden extends Place{
@@ -23,7 +20,7 @@ public class Garden extends Place{
 
     @Override
     public int getID() {
-        return Place.SHOP_ID;
+        return Place.GARDEN_ID;
     }
 
     @Override
@@ -39,7 +36,7 @@ public class Garden extends Place{
     @Override
     public void update(float delta) {
         super.update(delta);
-        this.rayHandler.setAmbientLight(dayNightCircle.getAmbientLight());
+        this.rayHandler.setAmbientLight(dayNightCircle.getAmbientLightIntensity());
     }
 
     @Override

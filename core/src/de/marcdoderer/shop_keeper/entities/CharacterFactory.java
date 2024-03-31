@@ -16,10 +16,10 @@ public class CharacterFactory {
         this.gameState = screen;
     }
 
-    public Player createPlayer(final String name, final Vector2 position,  final World world){
+    public Player createPlayer(final String name, final Vector2 position,  final World world, final int currenPlaceID){
         final Body body = createPlayerBody(world, position);
         final Sprite sprite = createPlayerSprite();
-        return new Player(sprite, body, new MoveAnimation(sprite), new IdleAnimation(sprite), name);
+        return new Player(sprite, body, new MoveAnimation(sprite), new IdleAnimation(sprite), name, currenPlaceID);
     }
 
     private Body createPlayerBody(final World world, final Vector2 position){

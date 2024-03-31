@@ -9,12 +9,13 @@ import de.marcdoderer.shop_keeper.entities.ItemCarryingEntity;
 import de.marcdoderer.shop_keeper.entities.items.Item;
 import de.marcdoderer.shop_keeper.entities.items.ItemFactory;
 import de.marcdoderer.shop_keeper.manager.EntityData;
+import de.marcdoderer.shop_keeper.manager.ItemData;
 
 import java.util.*;
 
 public class Chest extends ItemCarryingEntity {
 
-    private final Map<Integer, String> itemIDs;
+    private final Map<Integer, ItemData> itemDatas;
     private int carriedItemPos;
 
     /**
@@ -27,17 +28,17 @@ public class Chest extends ItemCarryingEntity {
      */
     public Chest(Sprite sprite, Body body, String entityType, ChestData cData) {
         super(sprite, body, entityType, new Vector2(0, 0));
-        this.itemIDs = new HashMap<>();
+        this.itemDatas = new HashMap<>();
         if(cData.savedItemsIds != null) {
             for (ItemPosTuple tuple : cData.savedItemsIds) {
-                itemIDs.put(tuple.pos, tuple.id);
+                itemDatas.put(tuple.pos, tuple.data);
             }
         }
         this.type = EntityFactory.EntityType.CHEST;
     }
 
-    public Map<Integer, String> getItemIDs(){
-        return this.itemIDs;
+    public Map<Integer, ItemData> getItemDatas(){
+        return this.itemDatas;
     }
 
     @Override
@@ -48,28 +49,29 @@ public class Chest extends ItemCarryingEntity {
     @Override
     public void carryItem(Item item) {
         int pos = 0;
-        for(int i = 0; i < itemIDs.size(); i++){
-            if(itemIDs.containsKey(i)){
+        for(int i = 0; i < itemDatas.size(); i++){
+            if(itemDatas.containsKey(i)){
                 pos = i + 1;
             }else{
                 break;
             }
         }
-        this.itemIDs.put(pos, item.id);
+        this.itemDatas.put(pos, item.createItemData());
     }
 
     public void carryItem(Item item, int pos){
-        this.itemIDs.put(pos, item.id);
+        this.itemDatas.put(pos, item.createItemData());
     }
 
     public void selectItem(final int index){
         this.carriedItemPos = index;
-        this.carriedItem = ItemFactory.getItemRegistry().createItemByID(itemIDs.get(index));
+        this.carriedItem = ItemFactory.getItemRegistry().createItemByID(itemDatas.get(index).itemID);
+        carriedItem.setStackCount(itemDatas.get(index).stackCount);
     }
 
     @Override
     public void removeCarriedItem() {
-        this.itemIDs.remove(carriedItemPos);
+        this.itemDatas.remove(carriedItemPos);
         super.removeCarriedItem();
     }
 
@@ -78,15 +80,15 @@ public class Chest extends ItemCarryingEntity {
         EntityData eData = super.getEntityData();
         ChestData cData = new ChestData();
         cData.setEntityData(eData);
-        if(itemIDs.size() > 0)
-            cData.setSavedItems(itemIDs);
+        if(itemDatas.size() > 0)
+            cData.setSavedItems(itemDatas);
 
         return cData;
     }
 
     private static class ItemPosTuple{
         private int pos;
-        private String id;
+        private ItemData data;
         public ItemPosTuple() {
 
         }
@@ -96,13 +98,13 @@ public class Chest extends ItemCarryingEntity {
 
         private ItemPosTuple[] savedItemsIds;
 
-        private void setSavedItems(final Map<Integer, String> ids){
+        private void setSavedItems(final Map<Integer, ItemData> ids){
             savedItemsIds = new ItemPosTuple[ids.size()];
             int i = 0;
             for(int pos : ids.keySet()){
                 savedItemsIds[i] = new ItemPosTuple();
                 savedItemsIds[i].pos = pos;
-                savedItemsIds[i].id = ids.get(pos);
+                savedItemsIds[i].data = ids.get(pos);
                 i++;
             }
         }

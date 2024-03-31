@@ -73,8 +73,10 @@ public abstract class PlaceLoader {
         ItemFactory itemFactory = ItemFactory.getItemRegistry(gameState);
         for(EntityData data : entityData) {
             Entity e = factory.createEntity(data, gameState.world);
-            if(data.getCarriedItem() != null){
-                ((ItemCarryingEntity) e).carryItem(itemFactory.createItemByID(data.getCarriedItem()));
+            if(data.getCarriedItemData() != null){
+                Item carriedItem = itemFactory.createItemByID(data.getCarriedItemData().itemID);
+                carriedItem.setStackCount(data.getCarriedItemData().stackCount);
+                ((ItemCarryingEntity) e).carryItem(carriedItem);
                 itemLayerList.add(((ItemCarryingEntity) e).getCarriedItem());
             }
 

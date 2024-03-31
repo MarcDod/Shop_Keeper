@@ -12,14 +12,23 @@ public class Character extends MovableEntity implements ItemCarry {
 
     // the id of the zone the character is standing atm
     private int currentZoneID;
+    private int currentPlaceID;
+
     protected String name;
     protected Item carriedItem;
 
-    public Character(final Sprite sprite, final Body body, final SpriteAnimator moveAnimation, final SpriteAnimator idleAnimation, final String name) {
+    public Character(final Sprite sprite, final Body body, final SpriteAnimator moveAnimation, final SpriteAnimator idleAnimation, final String name, final int currentPlaceID) {
         super(sprite, body, moveAnimation, idleAnimation);
         this.name = name;
         this.carriedItem = null;
         this.type = EntityFactory.EntityType.MOVABLE_ITEM_CARRYING;
+        this.currentPlaceID = currentPlaceID;
+    }
+
+    public int getCurrentPlaceID(){ return this.currentPlaceID;}
+
+    public void setCurrentPlaceID(final int currentPlaceID){
+        this.currentPlaceID = currentPlaceID;
     }
 
     public String getName(){

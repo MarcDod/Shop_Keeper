@@ -12,10 +12,12 @@ import de.marcdoderer.shop_keeper.entities.CharacterFactory;
 import de.marcdoderer.shop_keeper.entities.EntityManager;
 import de.marcdoderer.shop_keeper.entities.MovableEntity;
 import de.marcdoderer.shop_keeper.entities.Player;
+import de.marcdoderer.shop_keeper.entities.items.Item;
 import de.marcdoderer.shop_keeper.entities.items.ItemFactory;
 import de.marcdoderer.shop_keeper.entities.specialEntity.Chest;
 import de.marcdoderer.shop_keeper.listener.ChestListener;
 import de.marcdoderer.shop_keeper.listener.ExitZoneListener;
+import de.marcdoderer.shop_keeper.listener.TakeItemListener;
 import de.marcdoderer.shop_keeper.listener.TradeItemListener;
 import de.marcdoderer.shop_keeper.manager.PlaceData;
 import de.marcdoderer.shop_keeper.manager.PlayerData;
@@ -23,7 +25,7 @@ import de.marcdoderer.shop_keeper.movement.PlayerController;
 import de.marcdoderer.shop_keeper.movement.Zone;
 import de.marcdoderer.shop_keeper.screen.GameScreen;
 import de.marcdoderer.shop_keeper.screen.hud.IngameHud;
-import de.marcdoderer.shop_keeper.screen.hud.InventarHud;
+import de.marcdoderer.shop_keeper.screen.hud.InventoryHud;
 import de.marcdoderer.shop_keeper.shop.*;
 import de.marcdoderer.shop_keeper.shop.time.DayNightCircle;
 import de.marcdoderer.shop_keeper.util.FrameRate;
@@ -58,13 +60,15 @@ public class GameState extends State {
     public final ExitZoneListener exitZoneListener;
     public final TradeItemListener tradeItemListener;
     public final ChestListener chestListener;
+    public final TakeItemListener takeItemListener;
 
-    private InventarHud inventarHud;
+    private InventoryHud inventoryHud;
 
     public GameState(final GameScreen screen) {
         exitZoneListener = new ExitZoneListener(this);
         tradeItemListener = new TradeItemListener(this);
         chestListener = new ChestListener(this);
+        takeItemListener = new TakeItemListener(this);
         this.gameCamera = new OrthographicCamera(WIDTH, HEIGHT);
         this.ingameHud = new IngameHud();
         this.world = new World(new Vector2(0, 0), false);
@@ -109,6 +113,7 @@ public class GameState extends State {
     public void renderShapes(ShapeRenderer shapeRenderer) {
         shapeRenderer.setProjectionMatrix(gameCamera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+
         if (inventarHud != null) {
             inventarHud.drawGrid(shapeRenderer);
         }
@@ -129,8 +134,8 @@ public class GameState extends State {
     public void closeInventar() {
         this.ingameHud.removeHudElement(inventarHud);
         this.playerController.setActive(true);
-        this.inventarHud.dispose();
-        this.inventarHud = null;
+        this.inventoryHud.dispose();
+        this.inventoryHud = null;
 
     }
 
@@ -182,8 +187,9 @@ public class GameState extends State {
 
     @Override
     public void mouseClicked(float x, float y) {
-        boolean closed = inventarHud == null;
+        boolean closed = inventoryHud == null;
         playerController.clickEvent(new Vector2(x, y));
+
         if (inventarHud != null) {
             if (closed)
                 inventarHud.opendWithThisClick();
@@ -264,12 +270,14 @@ public class GameState extends State {
         final CharacterFactory characterFabric = new CharacterFactory(this);
 
         final Vector2 position = places[currentPlace].getGraph().getNodeMetaData(playerData.getPlayerZoneID()).getCenter();
-        final Player player = characterFabric.createPlayer("Player", position, world);
+        final Player player = characterFabric.createPlayer("Player", position, world, playerData.getPlayerPlaceID());
 
         player.setCurrentZoneID(playerData.getPlayerZoneID());
         player.startAnimation(MovableEntity.IDLE_ANIMATION);
-        if (playerData.getCarriedItemID() != null) {
-            player.carryItem(ItemFactory.getItemRegistry().createItemByID(playerData.getCarriedItemID()));
+        if (playerData.getCarriedItemData() != null) {
+            Item carriedItem = ItemFactory.getItemRegistry().createItemByID(playerData.getCarriedItemData().itemID);
+            carriedItem.setStackCount(playerData.getCarriedItemData().stackCount);
+            player.carryItem(carriedItem);
         }
 
         return player;
@@ -280,8 +288,8 @@ public class GameState extends State {
         playerData.setPlayerPlaceID(currentPlace);
         playerData.setPlayerZoneID(player.getCurrentZoneID());
 
-        if (player.getCarriedItem() != null) {
-            playerData.setCarriedItemID(player.getCarriedItem().id);
+        if(player.getCarriedItem() != null) {
+            playerData.setCarriedItemData(player.getCarriedItem().createItemData());
         }
         return playerData;
     }
